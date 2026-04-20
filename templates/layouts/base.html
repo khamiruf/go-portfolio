@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{{if .Title}}{{.Title}} — {{end}}khamiruf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gambarino&family=Epilogue:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <header class="site-header" id="site-header">
+    <a href="/" class="site-name">khamiruf</a>
+    <nav id="primary-nav">
+      <div class="nav-inner">
+        {{range navSections}}
+        <a href="/{{.}}/"{{if eq $.Section .}} aria-current="page"{{end}}>{{.}}</a>
+        {{end}}
+      </div>
+    </nav>
+    <div class="header-controls">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg id="theme-icon-dark" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <svg id="theme-icon-light" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="display:none">
+          <path d="M13.5 8.5A5.5 5.5 0 0 1 6 2.2a6 6 0 1 0 7.5 6.3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+      </button>
+    </div>
+  </header>
+  <main id="main-content">
+    {{template "content" .}}
+  </main>
+  <footer class="site-footer">
+    <p>© {{currentYear}} khamiruf</p>
+  </footer>
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+
+  {{if devMode}}
+  <script>
+    (function() {
+      function connect() {
+        var es = new EventSource('/~reload');
+        es.onmessage = function() { location.reload(); };
+        es.onerror = function() { es.close(); setTimeout(connect, 1000); };
+      }
+      connect();
+    })();
+  </script>
+  {{end}}
+  <script>
+    // Theme toggle
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      var dark = document.getElementById('theme-icon-dark');
+      var light = document.getElementById('theme-icon-light');
+      var html = document.documentElement;
+      function updateToggle(theme) {
+        if (theme === 'dark') {
+          dark.style.display = '';
+          light.style.display = 'none';
+          toggle.setAttribute('aria-label', 'Switch to light mode');
+        } else {
+          dark.style.display = 'none';
+          light.style.display = '';
+          toggle.setAttribute('aria-label', 'Switch to dark mode');
+        }
+      }
+      updateToggle(html.getAttribute('data-theme'));
+      toggle.addEventListener('click', function() {
+        var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateToggle(next);
+      });
+    })();
+
+    // Scroll reveal
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+
+      document.querySelectorAll('.post-list, .want-list').forEach(function(list) {
+        list.querySelectorAll('li').forEach(function(li, i) {
+          li.classList.add('reveal');
+          li.style.transitionDelay = Math.min(i * 45, 180) + 'ms';
+          observer.observe(li);
+        });
+      });
+
+      document.querySelectorAll('.book-grid').forEach(function(grid) {
+        grid.querySelectorAll('.book-card').forEach(function(card, i) {
+          card.style.transitionDelay = Math.min(i * 55, 330) + 'ms';
+          observer.observe(card);
+        });
+      });
+
+      document.querySelectorAll('.prose > *').forEach(function(el) {
+        el.classList.add('reveal');
+        observer.observe(el);
+      });
+
+      document.querySelectorAll('.section-label, .page-heading, .intro, .book-page-header').forEach(function(el) {
+        el.classList.add('reveal');
+        observer.observe(el);
+      });
+
+      // observe any elements already marked reveal by templates
+      document.querySelectorAll('.reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+
+    // Hamburger
+    (function() {
+      var btn = document.getElementById('hamburger');
+      var nav = document.getElementById('primary-nav');
+      if (!btn || !nav) return;
+      function close() {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Open menu');
+      }
+      btn.addEventListener('click', function() {
+        var open = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+      nav.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', close);
+      });
+      document.addEventListener('click', function(e) {
+        if (!nav.contains(e.target) && !btn.contains(e.target)) close();
+      });
+    })();
+
+    // Back to top
+    (function() {
+      var btn = document.getElementById('back-to-top');
+      if (!btn) return;
+      window.addEventListener('scroll', function() {
+        btn.classList.toggle('visible', window.scrollY > 400);
+      }, { passive: true });
+      btn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>

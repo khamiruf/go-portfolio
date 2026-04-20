@@ -1,0 +1,8 @@
+public/
+*.exe
+*.exe~
+.claude/
+.agents/
+skills-lock.json
+.impeccable.md
+

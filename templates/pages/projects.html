@@ -1,0 +1,17 @@
+{{define "content"}}
+<h1 class="page-heading">projects</h1>
+{{if .Posts}}
+<ul class="post-list post-list--no-date">
+  {{range .Posts}}
+  <li>
+    <div class="post-meta">
+      <a href="/projects/{{.Slug}}/">{{.Title}}</a>
+      {{if .Tags}}<span class="tags">{{range .Tags}}<span class="tag">{{.}}</span>{{end}}</span>{{end}}
+    </div>
+  </li>
+  {{end}}
+</ul>
+{{else}}
+<p class="muted">No projects yet. Either busy thinking or watching football.</p>
+{{end}}
+{{end}}

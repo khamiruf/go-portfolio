@@ -1,0 +1,18 @@
+{{define "content"}}
+<h1 class="page-heading">learnings</h1>
+{{if .Posts}}
+<ul class="post-list">
+  {{range .Posts}}
+  <li>
+    <span class="date">{{.Date}}</span>
+    <div class="post-meta">
+      <a href="/learnings/{{.Slug}}/">{{.Title}}</a>
+      {{if .Tags}}<span class="tags">{{range .Tags}}<span class="tag">{{.}}</span>{{end}}</span>{{end}}
+    </div>
+  </li>
+  {{end}}
+</ul>
+{{else}}
+<p class="muted">Nothing here yet. Suspiciously quiet.</p>
+{{end}}
+{{end}}

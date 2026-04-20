@@ -1,0 +1,46 @@
+{{define "content"}}
+<article class="book-page">
+  <a href="/readings/" class="book-back reveal">← readings</a>
+
+  <div class="book-page-header reveal">
+    <div class="book-page-cover-col">
+      {{if .Book.Cover}}
+      <img class="book-page-cover-img" src="{{.Book.Cover}}" alt="" />
+      {{else}}
+      <div class="book-page-cover-placeholder">
+        <span>{{.Book.Title}}</span>
+      </div>
+      {{end}}
+    </div>
+    <div class="book-page-meta">
+      {{if .Book.Rating}}
+      <p class="book-page-rating">{{ratingDots .Book.Rating}}</p>
+      {{end}}
+      <h1 class="book-page-title">{{.Book.Title}}</h1>
+      <p class="book-page-author">{{.Book.Author}}</p>
+      <div class="book-page-stats">
+        {{if .Book.DateRead}}<span>{{fmtDate .Book.DateRead}}</span>{{end}}
+        {{if .Book.Progress}}<span>{{.Book.Progress}}% through</span>{{end}}
+      </div>
+    </div>
+  </div>
+
+  {{if .Book.Note}}
+  <div class="book-page-review">
+    <div class="review-header reveal">
+      <p class="section-label">my notes</p>
+      {{if .Book.NoteWordCount}}
+      <span class="review-stats">{{.Book.NoteWordCount}} words · ~{{.Book.NoteReadTime}} min read</span>
+      {{end}}
+    </div>
+    {{range splitParagraphs .Book.Note}}
+    <p class="book-page-review-text reveal">{{.}}</p>
+    {{end}}
+  </div>
+  {{else if eq .Book.Status "read"}}
+  <div class="book-page-review">
+    <p class="muted reveal">Nothing written down. Sometimes a book just sits with you.</p>
+  </div>
+  {{end}}
+</article>
+{{end}}

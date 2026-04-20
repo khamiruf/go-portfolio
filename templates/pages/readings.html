@@ -1,0 +1,71 @@
+{{define "content"}}
+<h1 class="page-heading">books</h1>
+
+{{$reading := filterStatus .Books "reading"}}
+{{$read    := filterStatus .Books "read"}}
+{{$want    := filterStatus .Books "want-to-read"}}
+
+{{if $reading}}
+<section class="books-section">
+  <p class="section-label">reading</p>
+  <div class="book-grid">
+    {{range $reading}}
+    <a href="/readings/{{.Slug}}/" class="book-card reveal">
+      <div class="book-cover">
+        {{if .Cover}}<img src="{{.Cover}}" alt="" loading="lazy" />
+        {{else}}<div class="cover-placeholder"><span>{{.Title}}</span></div>{{end}}
+      </div>
+      <div class="book-info">
+        <p class="book-title">{{.Title}}</p>
+        <p class="book-author">{{.Author}}</p>
+        {{if .Progress}}
+        <div class="progress-bar"><div class="progress-fill" style="width: {{.Progress}}%"></div></div>
+        <span class="progress-label">{{.Progress}}%</span>
+        {{end}}
+      </div>
+    </a>
+    {{end}}
+  </div>
+</section>
+{{end}}
+
+{{if $read}}
+<section class="books-section">
+  <p class="section-label">read</p>
+  <div class="book-grid">
+    {{range $read}}
+    <a href="/readings/{{.Slug}}/" class="book-card reveal">
+      <div class="book-cover">
+        {{if .Cover}}<img src="{{.Cover}}" alt="" loading="lazy" />
+        {{else}}<div class="cover-placeholder"><span>{{.Title}}</span></div>{{end}}
+      </div>
+      <div class="book-info">
+        <p class="book-title">{{.Title}}</p>
+        <p class="book-author">{{.Author}}</p>
+        {{if .Rating}}<p class="book-rating">{{ratingDots .Rating}}</p>{{end}}
+      </div>
+    </a>
+    {{end}}
+  </div>
+</section>
+{{end}}
+
+{{if $want}}
+<section class="books-section">
+  <p class="section-label">want to read</p>
+  <ul class="want-list">
+    {{range $want}}
+    <li>
+      <span class="book-title">{{.Title}}</span>
+      <span class="book-author">{{.Author}}</span>
+    </li>
+    {{end}}
+  </ul>
+</section>
+{{else}}
+<section class="books-section">
+  <p class="section-label">want to read</p>
+  <p class="muted">Nothing queued up. This won't last long.</p>
+</section>
+{{end}}
+{{end}}
