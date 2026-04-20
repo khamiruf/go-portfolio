@@ -37,15 +37,17 @@ type Book struct {
 }
 
 type Page struct {
-	Title   string   `yaml:"title"`
-	Date    string   `yaml:"date"`
-	Tags    []string `yaml:"tags"`
-	Section string
-	Slug    string
-	Body    template.HTML
-	Posts   []Page
-	Books   []Book
-	Book    Book // single book for detail pages
+	Title     string   `yaml:"title"`
+	Date      string   `yaml:"date"`
+	Tags      []string `yaml:"tags"`
+	Section   string
+	Slug      string
+	Body      template.HTML
+	Posts     []Page
+	Books     []Book
+	Book      Book // single book for detail pages
+	WordCount int
+	ReadTime  int // minutes
 }
 
 // devMode is true when running --serve; gates the hot-reload SSE script injection.
@@ -369,6 +371,12 @@ func parsePage(path string) (Page, error) {
 	}
 	p.Body = template.HTML(buf.String()) //nolint:gosec // trusted local content
 	p.Slug = strings.TrimSuffix(filepath.Base(path), ".md")
+	wc := len(strings.Fields(string(body)))
+	p.WordCount = wc
+	p.ReadTime = wc / 200
+	if p.ReadTime == 0 {
+		p.ReadTime = 1
+	}
 	return p, nil
 }
 

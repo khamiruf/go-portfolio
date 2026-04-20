@@ -685,6 +685,23 @@ main {
   margin-bottom: 0;
 }
 
+/* ── Reading progress bar ── */
+#read-progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 5px;
+  width: 0%;
+  background: oklch(40% 0.04 60);
+  z-index: 300;
+  transition: width 200ms ease;
+  pointer-events: none;
+}
+
+[data-theme="light"] #read-progress {
+  background: oklch(38% 0.07 55);
+}
+
 /* ── Back to top ── */
 .back-to-top {
   position: fixed;
@@ -806,4 +823,9 @@ main {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+}
+
+.prose img {
+  max-width: 100%;
+  width: 600px;
 }

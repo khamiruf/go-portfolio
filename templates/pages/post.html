@@ -2,14 +2,13 @@
 <article>
   <div class="article-header">
     <h1>{{.Title}}</h1>
-    {{if .Date}}
     <p class="meta">
-      <span>{{.Date}}</span>
+      {{if .Date}}<span>{{.Date}}</span>{{end}}
+      {{if .WordCount}}<span>{{.WordCount}} words</span><span>{{.ReadTime}} min read</span>{{end}}
       {{if .Tags}}{{range .Tags}}<span class="tag">{{.}}</span>{{end}}{{end}}
     </p>
-    {{end}}
   </div>
-  <div class="prose">
+  <div class="prose" id="post-body">
     {{.Body}}
   </div>
 </article>

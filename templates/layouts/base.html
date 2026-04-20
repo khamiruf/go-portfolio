@@ -16,6 +16,7 @@
   </script>
 </head>
 <body>
+  <div id="read-progress" aria-hidden="true"></div>
   <a href="#main-content" class="skip-link">Skip to content</a>
   <header class="site-header" id="site-header">
     <a href="/" class="site-name">khamiruf</a>
@@ -111,6 +112,7 @@
 
       document.querySelectorAll('.book-grid').forEach(function(grid) {
         grid.querySelectorAll('.book-card').forEach(function(card, i) {
+          card.classList.add('reveal');
           card.style.transitionDelay = Math.min(i * 55, 330) + 'ms';
           observer.observe(card);
         });
@@ -165,6 +167,19 @@
       btn.addEventListener('click', function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+    })();
+
+    // Reading progress bar
+    (function() {
+      var bar = document.getElementById('read-progress');
+      if (!bar || !document.getElementById('post-body')) return;
+      function update() {
+        var pct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
+        bar.style.width = pct + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('load', update);
+      update();
     })();
   </script>
 </body>
