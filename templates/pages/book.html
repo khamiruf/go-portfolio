@@ -5,7 +5,11 @@
   <div class="book-page-header reveal">
     <div class="book-page-cover-col">
       {{if .Book.Cover}}
-      <img class="book-page-cover-img" src="{{.Book.Cover}}" alt="" />
+      <img class="book-page-cover-img" src="{{.Book.Cover}}" alt=""
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+      <div class="book-page-cover-placeholder" style="display:none">
+        <span>{{.Book.Title}}</span>
+      </div>
       {{else}}
       <div class="book-page-cover-placeholder">
         <span>{{.Book.Title}}</span>

@@ -12,7 +12,9 @@
     {{range $reading}}
     <a href="/readings/{{.Slug}}/" class="book-card reveal">
       <div class="book-cover">
-        {{if .Cover}}<img src="{{.Cover}}" alt="" loading="lazy" />
+        {{if .Cover}}<img src="{{.Cover}}" alt="" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="cover-placeholder" style="display:none"><span>{{.Title}}</span></div>
         {{else}}<div class="cover-placeholder"><span>{{.Title}}</span></div>{{end}}
       </div>
       <div class="book-info">
@@ -36,7 +38,9 @@
     {{range $read}}
     <a href="/readings/{{.Slug}}/" class="book-card reveal">
       <div class="book-cover">
-        {{if .Cover}}<img src="{{.Cover}}" alt="" loading="lazy" />
+        {{if .Cover}}<img src="{{.Cover}}" alt="" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="cover-placeholder" style="display:none"><span>{{.Title}}</span></div>
         {{else}}<div class="cover-placeholder"><span>{{.Title}}</span></div>{{end}}
       </div>
       <div class="book-info">
