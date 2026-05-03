@@ -2,6 +2,7 @@
 title: "Why Palestine?"
 author: "Walid Jumblatt Abdullah"
 isbn: "9789811753954"
+cover: "/assets/media/books/why-palestine.jpg"
 status: "read"
 rating: 5
 date_read: "2026-04-10"

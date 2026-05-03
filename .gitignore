@@ -1,6 +1,7 @@
 public/
 *.exe
 *.exe~
+.DS_Store
 .claude/
 .agents/
 skills-lock.json

@@ -2,6 +2,7 @@
 title: "Unease"
 author: "Teo Yeo Yenn"
 isbn: "9789811781407"
+cover: "/assets/media/books/unease.jpg"
 status: "reading"
 progress: 23
 date_read: ""
