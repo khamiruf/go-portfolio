@@ -37,9 +37,7 @@
       <span class="review-stats">{{.Book.NoteWordCount}} words · ~{{.Book.NoteReadTime}} min read</span>
       {{end}}
     </div>
-    {{range splitParagraphs .Book.Note}}
-    <p class="book-page-review-text reveal">{{.}}</p>
-    {{end}}
+    <div class="book-page-review-text reveal">{{markdownify .Book.Note}}</div>
   </div>
   {{else if eq .Book.Status "read"}}
   <div class="book-page-review">

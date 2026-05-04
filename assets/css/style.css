@@ -681,8 +681,34 @@ main {
   margin-bottom: var(--space-lg);
 }
 
+.book-page-review-text p {
+  margin-bottom: var(--space-md);
+}
+
+.book-page-review-text p:last-child {
+  margin-bottom: 0;
+}
+
 .book-page-review-text:last-child {
   margin-bottom: 0;
+}
+
+.book-page-review-text a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border);
+  transition: text-decoration-color var(--dur-fast) var(--ease-out-quart);
+}
+
+.book-page-review-text a:hover { text-decoration-color: var(--accent); }
+
+.book-page-review-text blockquote {
+  border-left: 1px solid var(--border);
+  margin: var(--space-xl) 0;
+  padding-left: var(--space-lg);
+  color: var(--fg-muted);
+  font-style: italic;
 }
 
 /* ── Reading progress bar ── */

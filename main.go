@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/renderer/html"
 	"gopkg.in/yaml.v3"
 )
 
@@ -288,6 +289,14 @@ var funcMap = template.FuncMap{
 			return s
 		}
 		return t.Format("January 2006")
+	},
+	"markdownify": func(s string) template.HTML {
+		var buf bytes.Buffer
+		md := goldmark.New(goldmark.WithRendererOptions(html.WithUnsafe()))
+		if err := md.Convert([]byte(s), &buf); err != nil {
+			return template.HTML(template.HTMLEscapeString(s))
+		}
+		return template.HTML(buf.String())
 	},
 	"splitParagraphs": func(s string) []string {
 		if s == "" {
