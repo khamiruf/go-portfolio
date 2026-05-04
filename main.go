@@ -22,15 +22,16 @@ import (
 )
 
 type Book struct {
-	Title    string `yaml:"title"`
-	Author   string `yaml:"author"`
-	ISBN     string `yaml:"isbn"`
-	Cover    string `yaml:"cover"`
-	Progress int    `yaml:"progress"`
-	Status   string `yaml:"status"` // reading | read | want-to-read
-	Note     string `yaml:"note"`
-	Rating   int    `yaml:"rating"`
-	DateRead string `yaml:"date_read"`
+	Title    string   `yaml:"title"`
+	Author   string   `yaml:"author"`
+	ISBN     string   `yaml:"isbn"`
+	Cover    string   `yaml:"cover"`
+	Progress int      `yaml:"progress"`
+	Status   string   `yaml:"status"` // reading | read | want-to-read
+	Note     string   `yaml:"note"`
+	Rating   int      `yaml:"rating"`
+	DateRead string   `yaml:"date_read"`
+	Tags     []string `yaml:"tags"`
 	Slug     string
 	// computed fields
 	NoteWordCount int
@@ -270,6 +271,32 @@ func buildSite() error {
 var funcMap = template.FuncMap{
 	"filterStatus": func(books []Book, status string) []Book {
 		return filterStatus(books, status)
+	},
+	"joinTags": func(tags []string) string {
+		return strings.Join(tags, ",")
+	},
+	"allTags": func(books []Book) []string {
+		seen := map[string]bool{}
+		var out []string
+		for _, b := range books {
+			for _, t := range b.Tags {
+				if !seen[t] {
+					seen[t] = true
+					out = append(out, t)
+				}
+			}
+		}
+		sort.Strings(out)
+		return out
+	},
+	"tagCounts": func(books []Book) map[string]int {
+		counts := map[string]int{}
+		for _, b := range books {
+			for _, t := range b.Tags {
+				counts[t]++
+			}
+		}
+		return counts
 	},
 	"ratingDots": func(r int) string {
 		if r == 0 {

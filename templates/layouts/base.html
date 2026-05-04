@@ -48,6 +48,9 @@
   </main>
   <footer class="site-footer">
     <p>© {{currentYear}} khamiruf</p>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      {{range navSections}}<a href="/{{.}}/">{{.}}</a>{{end}}
+    </nav>
   </footer>
   <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
 

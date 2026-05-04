@@ -6,4 +6,7 @@ status: "want-to-read"
 rating: 0
 date_read: ""
 note: ""
+tags:
+  - fiction
+  - classic
 ---

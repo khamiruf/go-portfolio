@@ -4,4 +4,7 @@ author: "Mitch Albom"
 status: "read"
 isbn: "9780751569575"
 rating: 5
+tags:
+  - non-fiction
+  - memoir
 ---

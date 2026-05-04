@@ -6,4 +6,6 @@ status: "read"
 rating: 5
 date_read: "2024-02-12"
 note: "A captivating and spellbinding novel. Evelyn is a complex and flawed heroine who is both vulnerable and fiercely independent. A must-read with unforgettable characters and a plot full of surprises."
+tags:
+  - fiction
 ---

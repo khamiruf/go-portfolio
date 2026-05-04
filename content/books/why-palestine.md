@@ -11,4 +11,7 @@ note: "This is a small but mighty book that helped me finally get up to speed on
 I went into this hoping it wouldn’t be weighed down by political leanings. While I acknowledge that total neutrality is impossible, this book stays focused on objective impacts and why we as Singaporeans need to care. No more shoulder-shrugging or staying politically ignorant. When humans are involved, everything is political.
 
 If you're interested, grab yourself a copy at: https://epigrambookshop.sg/products/why-palestine-reflections-from-singapore"
+tags:
+  - non-fiction
+  - history
 ---

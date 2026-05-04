@@ -26,6 +26,11 @@
         {{if .Book.DateRead}}<span>{{fmtDate .Book.DateRead}}</span>{{end}}
         {{if .Book.Progress}}<span>{{.Book.Progress}}% through</span>{{end}}
       </div>
+      {{if .Book.Tags}}
+      <div class="book-page-tags">
+        {{range .Book.Tags}}<a href="/readings/?tag={{.}}" class="tag">{{.}}</a>{{end}}
+      </div>
+      {{end}}
     </div>
   </div>
 

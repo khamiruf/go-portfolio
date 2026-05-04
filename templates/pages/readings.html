@@ -4,13 +4,25 @@
 {{$reading := filterStatus .Books "reading"}}
 {{$read    := filterStatus .Books "read"}}
 {{$want    := filterStatus .Books "want-to-read"}}
+{{$tags    := allTags .Books}}
+{{$counts  := tagCounts .Books}}
+
+{{if $tags}}
+<div class="tag-filters">
+  <label class="tag-filter-label" for="tag-select">filter</label>
+  <select id="tag-select" class="tag-select">
+    <option value="all">all</option>
+    {{range $tags}}<option value="{{.}}">{{.}} ({{index $counts .}})</option>{{end}}
+  </select>
+</div>
+{{end}}
 
 {{if $reading}}
-<section class="books-section">
+<section class="books-section" data-section="reading">
   <p class="section-label">reading</p>
   <div class="book-grid">
     {{range $reading}}
-    <a href="/readings/{{.Slug}}/" class="book-card reveal">
+    <a href="/readings/{{.Slug}}/" class="book-card reveal" data-tags="{{joinTags .Tags}}">
       <div class="book-cover">
         {{if .Cover}}<img src="{{.Cover}}" alt="" loading="lazy"
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
@@ -32,11 +44,11 @@
 {{end}}
 
 {{if $read}}
-<section class="books-section">
+<section class="books-section" data-section="read">
   <p class="section-label">read</p>
   <div class="book-grid">
     {{range $read}}
-    <a href="/readings/{{.Slug}}/" class="book-card reveal">
+    <a href="/readings/{{.Slug}}/" class="book-card reveal" data-tags="{{joinTags .Tags}}">
       <div class="book-cover">
         {{if .Cover}}<img src="{{.Cover}}" alt="" loading="lazy"
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
@@ -55,11 +67,11 @@
 {{end}}
 
 {{if $want}}
-<section class="books-section">
+<section class="books-section" data-section="want">
   <p class="section-label">want to read</p>
   <ul class="want-list">
     {{range $want}}
-    <li>
+    <li data-tags="{{joinTags .Tags}}">
       <span class="book-title">{{.Title}}</span>
       <span class="book-author">{{.Author}}</span>
     </li>
@@ -67,9 +79,37 @@
   </ul>
 </section>
 {{else}}
-<section class="books-section">
+<section class="books-section" data-section="want">
   <p class="section-label">want to read</p>
   <p class="muted">Nothing queued up. This won't last long.</p>
 </section>
 {{end}}
+
+<script>
+(function() {
+  var sel = document.getElementById('tag-select');
+  if (!sel) return;
+
+  function applyFilter(tag) {
+    sel.value = tag || 'all';
+    document.querySelectorAll('.book-card, .want-list li').forEach(function(el) {
+      if (!tag || tag === 'all') {
+        el.style.display = '';
+      } else {
+        var tags = el.dataset.tags ? el.dataset.tags.split(',') : [];
+        el.style.display = tags.indexOf(tag) !== -1 ? '' : 'none';
+      }
+    });
+    document.querySelectorAll('.books-section').forEach(function(section) {
+      var visible = section.querySelectorAll('.book-card:not([style*="display: none"]), .want-list li:not([style*="display: none"])');
+      section.style.display = visible.length === 0 ? 'none' : '';
+    });
+  }
+
+  sel.addEventListener('change', function() { applyFilter(sel.value); });
+
+  var initialTag = new URLSearchParams(window.location.search).get('tag');
+  if (initialTag) applyFilter(initialTag);
+})();
+</script>
 {{end}}

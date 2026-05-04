@@ -6,4 +6,8 @@ status: "read"
 rating: 5
 date_read: "2024-09-25"
 note: "Viktor Frankl summarizes meaning through three ideas: creating a work, experiencing something fully or loving someone, and adopting a meaningful attitude toward unavoidable suffering."
+tags:
+  - non-fiction
+  - philosophy
+  - psychology
 ---

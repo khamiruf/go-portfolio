@@ -5,4 +5,7 @@ status: "read"
 isbn: "9781847941831"
 rating: 3
 date_read: "2023-10-24"
+tags:
+  - non-fiction
+  - self-help
 ---

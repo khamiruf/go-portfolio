@@ -4,4 +4,7 @@ author: "Lori Gottlieb"
 isbn: "9781328662057"
 status: "read"
 rating: 5
+tags:
+  - non-fiction
+  - psychology
 ---

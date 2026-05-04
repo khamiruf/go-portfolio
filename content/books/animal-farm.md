@@ -54,4 +54,7 @@ note: |
   And now, my mind is blown by the fact that this book is only 112 pages long, and yet it has so much depth and meaning. I can see why this book is considered a classic and is still relevant today. The whole U-turn to rebrand it back from 'Animal Farm' to 'Manor Farm' just seals the deal on how the pigs are just as bad as the humans they overthrew, and how power corrupts.
 
   Also, wtf man that they keep gasligthing the other animals by changing the commandments and making them believe that they are still following the original principles of the revolution, when in reality they are just being exploited and oppressed by the pigs. Just because the other animals are illiterate!
+tags:
+  - fiction
+  - classic
 ---

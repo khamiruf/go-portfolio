@@ -5,4 +5,7 @@ isbn: "9781982120627"
 status: "read"
 rating: 4
 date_read: "2023-12-25"
+tags:
+  - non-fiction
+  - self-help
 ---

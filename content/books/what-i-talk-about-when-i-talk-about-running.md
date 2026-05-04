@@ -5,4 +5,7 @@ status: "read"
 isbn: "9780099526155"
 rating: 4
 date_read: "2024-06-01"
+tags:
+  - memoir
+  - japanese
 ---

@@ -6,4 +6,7 @@ status: "read"
 rating: 5
 date_read: "2024-11-02"
 note: "Very wholesome read start to finish, with insights on Japanese culture. The way the seemingly distinct characters with their own storylines intertwine was very lovely."
+tags:
+  - fiction
+  - japanese
 ---

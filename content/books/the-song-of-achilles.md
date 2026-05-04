@@ -15,4 +15,6 @@ Achilles is just a remarkably strong and gifted character, for someone who is me
 
 It was a nice and fun read and I got carried along the way. Even Briseis, the farmer girl captured by the Greeks and given to Achilles as a war prize, had a strong character arc and was portrayed with depth and nuance.
 "
+tags:
+  - fiction
 ---
