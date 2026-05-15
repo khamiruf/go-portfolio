@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer/html"
 	"gopkg.in/yaml.v3"
 )
@@ -319,7 +320,10 @@ var funcMap = template.FuncMap{
 	},
 	"markdownify": func(s string) template.HTML {
 		var buf bytes.Buffer
-		md := goldmark.New(goldmark.WithRendererOptions(html.WithUnsafe()))
+		md := goldmark.New(
+			goldmark.WithExtensions(extension.Linkify),
+			goldmark.WithRendererOptions(html.WithUnsafe()),
+		)
 		if err := md.Convert([]byte(s), &buf); err != nil {
 			return template.HTML(template.HTMLEscapeString(s))
 		}
@@ -402,7 +406,8 @@ func parsePage(path string) (Page, error) {
 		}
 	}
 	var buf bytes.Buffer
-	if err := goldmark.Convert(body, &buf); err != nil {
+	md := goldmark.New(goldmark.WithExtensions(extension.Linkify))
+	if err := md.Convert(body, &buf); err != nil {
 		return Page{}, err
 	}
 	p.Body = template.HTML(buf.String()) //nolint:gosec // trusted local content
