@@ -6,13 +6,13 @@ status: "read"
 rating: 5
 date_read: "2026-05-16"
 note: |
-  Technically, this was an audiobook — narrated by John Green himself. But what counts as "read"? Absorbed, understood, moved by? Then this counts.
+  Technically, this was an audiobook — narrated by John Green himself. But hey, who says you can't count an audiobook as a book read? Maybe you can't on technicality. But on my opinion, this counts.
 
-  Tuberculosis and I have a complicated history. In 2019, a doctor in China scrutinised my persistent cough and bloody sputum, and casually floated the possibility that I might have TB. She sent me scrambling through my memory for any record of a BCG vaccine. There wasn't one. There was no tuberculosis either — just a new, unnamed pneumonia that would soon become very named. I left China, the cough cleared, and weeks later the world met COVID-19. The rest, as they say, is history.
+  Tuberculosis and I have a complicated history. My first encounter was a health scare during my internship stint in China — a doctor who noticed my persistent cough and the sputum of blood I was coughing up, and suggested I might have TB. She got me rambling, searching my memory for any record of a vaccine jab. Spoiler alert: I did not have any vaccine, nor did I have tuberculosis at that point. I was diagnosed with a new form of pneumonia instead — and weeks later, news broke about the new Coronavirus. The rest is history.
 
-  My second encounter: Arthur Morgan in *Red Dead Redemption 2*, slowly consumed by the disease after a vagrant coughs on him early in the game. I watched Arthur deteriorate with the dread of knowing what was coming, without fully understanding *why* it had to come. "Consumption" is the word — and it's fitting, as Green explains. The disease doesn't just infect you. It devours you.
+  My second encounter came through Arthur Morgan in *Red Dead Redemption 2*, slowly beaten by consumption after a vagrant coughs on him early in the game. "Consumption" is another term I learnt from John Green and this book — a disease that doesn't just infect you, but inevitably consumes you. Watching Arthur deteriorate hit differently once I understood what that word actually meant.
 
-  Green fills that gap in understanding. Following the life of Henry Reider, he makes the mechanics of tuberculosis — its spread, its stigma, its stubborn persistence — feel urgent and deeply human. What struck me most was the argument that medicine alone is never enough. For a drug to work, a patient needs food. For a patient to have food, they need economic stability. For economic stability, they need systems that don't abandon them. Pull out any single thread and the whole thing unravels.
+  Green makes this all extremely accessible and easy to follow. Navigating the world of Henry Reider — a patient ridden with tuberculosis — he shows that the whole recovery and cure process requires more than just medication. It's a concert of every single component in the system working in harmony. For the medication to even be effective, patients require access to food. And in a world where food is scarce or unaffordable, the cure becomes exponentially harder to reach. Pull out any single thread and the whole thing unravels.
 
   The book's sharpest line:
 
