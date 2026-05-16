@@ -3,7 +3,7 @@ title: "Everything Is Tuberculosis"
 author: "John Green"
 isbn: "9780525556572"
 status: "read"
-rating: 0
+rating: 5
 date_read: "2026-05-16"
 note: |
   Technically, this was an audiobook — narrated by John Green himself. But what counts as "read"? Absorbed, understood, moved by? Then this counts.
