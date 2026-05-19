@@ -9,5 +9,5 @@ tags:
   - literary-fiction
   - thriller
 note: |
-  My first R. F. Kuang read, and I went in completely blind — assumed it would be a straightforward commentary on racism. Instead, it's a razor-sharp literary thriller about a white female author who steals an unpublished manuscript from her Chinese-American peer. It's wickedly clever, the kind of story that feels like it belongs on a prestige film pitch. Only 30% in but already hooked, waiting for the next layer of scandal to unravel.
+  My first R. F. Kuang. Went in blind thinking it'd just be a commentary on racism. It's really a thriller about a white author who steals an unpublished manuscript from her Chinese-American peer. Didn't see it coming. 30% in and can't put it down.
 ---
