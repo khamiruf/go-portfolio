@@ -3,12 +3,17 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"image"
 	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 	"time"
+
+	"github.com/disintegration/imaging"
+	"github.com/rwcarlsen/goexif/exif"
 )
 
 func buildSite() error {
@@ -123,6 +128,8 @@ func renderPage(base []byte, tmplPath, outPath string, data Page) error {
 	return tmpl.ExecuteTemplate(f, "base", data)
 }
 
+const maxImageWidth = 1400
+
 func copyAssets() error {
 	return filepath.WalkDir("assets", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -132,8 +139,78 @@ func copyAssets() error {
 		if d.IsDir() {
 			return os.MkdirAll(dest, 0755)
 		}
+		if isResizableImage(path) {
+			return copyResizedImage(path, dest)
+		}
 		return copyFile(path, dest)
 	})
+}
+
+func isResizableImage(path string) bool {
+	ext := strings.ToLower(filepath.Ext(path))
+	return ext == ".jpg" || ext == ".jpeg" || ext == ".png"
+}
+
+func jpegOrientation(src string) int {
+	f, err := os.Open(src)
+	if err != nil {
+		return 1
+	}
+	defer f.Close()
+	x, err := exif.Decode(f)
+	if err != nil {
+		return 1
+	}
+	tag, err := x.Get(exif.Orientation)
+	if err != nil {
+		return 1
+	}
+	o, err := tag.Int(0)
+	if err != nil {
+		return 1
+	}
+	return o
+}
+
+func applyOrientation(img image.Image, o int) image.Image {
+	switch o {
+	case 2:
+		return imaging.FlipH(img)
+	case 3:
+		return imaging.Rotate180(img)
+	case 4:
+		return imaging.FlipV(img)
+	case 5:
+		return imaging.Transpose(img)
+	case 6:
+		return imaging.Rotate270(img)
+	case 7:
+		return imaging.Transverse(img)
+	case 8:
+		return imaging.Rotate90(img)
+	}
+	return img
+}
+
+func copyResizedImage(src, dst string) error {
+	img, err := imaging.Open(src)
+	if err != nil {
+		return copyFile(src, dst)
+	}
+
+	if o := jpegOrientation(src); o > 1 {
+		img = applyOrientation(img, o)
+	}
+
+	if img.Bounds().Dx() > maxImageWidth {
+		img = imaging.Resize(img, maxImageWidth, 0, imaging.Lanczos)
+	}
+
+	ext := strings.ToLower(filepath.Ext(src))
+	if ext == ".png" {
+		return imaging.Save(img, dst)
+	}
+	return imaging.Save(img, dst, imaging.JPEGQuality(82))
 }
 
 func copyFile(src, dst string) error {

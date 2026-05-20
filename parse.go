@@ -11,6 +11,7 @@ import (
 
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/renderer/html"
 	"gopkg.in/yaml.v3"
 )
 
@@ -48,7 +49,10 @@ func parsePage(path string) (Page, error) {
 		}
 	}
 	var buf bytes.Buffer
-	md := goldmark.New(goldmark.WithExtensions(extension.Linkify))
+	md := goldmark.New(
+		goldmark.WithExtensions(extension.Linkify),
+		goldmark.WithRendererOptions(html.WithUnsafe()),
+	)
 	if err := md.Convert(body, &buf); err != nil {
 		return Page{}, err
 	}
