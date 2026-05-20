@@ -1,7 +1,7 @@
 ---
 title: "Japan with a Guy from Waseda University: Part 1"
 date: "2026-01-29"
-tags: ["japan", "tokyo", "winter", "fuji"]
+tags: ["japan", "tokyo", "winter", "sushi", "toilet", "anime"]
 ---
 
 *disclaimer, as much as I hate "parts": this got too long, so I split it in two.*
@@ -211,7 +211,7 @@ Glows in the dark at night. That's fun.
   <figcaption>Hi Toilet, Nanago Dori Park, by Kazoo Sato</figcaption>
 </figure>
 
-Most disappointing of the lot. The voice assistant wasn't working — no response, nothing. The design is cute though.Even when I tried to inflect my voice in a Japanese (some might say *'racist' while others say 'kawaii'*) accent, it still did not work. 
+Most disappointing of the lot. The voice assistant wasn't working — no response, nothing. The design is cute though. Even when I tried to inflect my voice in a Japanese (some might say *'racist' while others say 'kawaii'*) accent, it still did not work. 
 
 <figure class="img-sm">
   <img src="/assets/media/travel/public_toilet_4.jpg" alt="Toilet 4">
@@ -257,5 +257,18 @@ This draws me to the art of drawing food, especially in anime. So, I was very ex
   <figcaption>their menu</figcaption>
 </figure>
 
+Now, please tell me that these do look like they're straight out of the drawings.
+
+<figure class="img-sm">
+  <img src="/assets/media/travel/jap_pasta_bacon.jpg" alt="Japanese Pasta Dish">
+  <figcaption>Aglio e Olio Bacon!</figcaption>
+</figure>
+
+<figure class="img-sm">
+  <img src="/assets/media/travel/jap_pasta_seafood.jpg" alt="Japanese Pasta Dish">
+  <figcaption>Seafood Marinara of sorts</figcaption>
+</figure>
+
+They were also delectable to the palate. Definitely would make a return there if I ever find myself in Tokyo again. Full detailed food reviews (including other dishes) can be found on my [Beli](https://beliapp.co/app/khamiruf).
 
 More to come in part 2.
