@@ -19,6 +19,13 @@ This was the view upon arrival. I was already excited to see Mt. Fuji. Then I sa
   <figcaption>View of coloured trains, oh how progressive we have come</figcaption>
 </figure>
 
+Ten years of desktop wallpaper. A short hike. And there it was.
+
+<figure class="img-md">
+  <img src="/assets/media/travel/fuji_chureito_pagoda.jpg" alt="Chureito Pagoda">
+  <figcaption>Chureito Pagoda, with Fuji-san as the backdrop</figcaption>
+</figure>
+
 While there, I also walked the Aokigahara Trail, through the forest better known as the "Suicide Forest," made briefly more famous by *Logan Paul*. The trail gave me two feelings at once: a deep, green serenity, and a creeping unease that built the longer I stayed. Could've been the reputation. Could've been the fact that there was nobody else around. Probably both.
 
 Strip away the context and it would've been a lovely walk in the woods. Some scenes:
