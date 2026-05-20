@@ -109,7 +109,7 @@ The story begins when Fujino is sent to deliver something to Kyomoto's house. Th
 
 <figure class="img-sm">
   <img src="/assets/media/travel/look_back_compile.jpg" alt="Look Back Compile">
-  <figcaption>ook Back Exhibition, featuring the works of Kiyotaka Oshiyama, and produced by Studio Durian</figcaption>
+  <figcaption>Look Back Exhibition, featuring the works of Kiyotaka Oshiyama, and produced by Studio Durian</figcaption>
 </figure>
 
 *Looking back* (*hehehe*) at the exhibition, the thing that stayed with me was the sheer volume of feeling in the original drawings. The detail, the motion, the emotional weight in single frames. I cannot draw, and being confronted with that level of craft up close doesn't help my confidence any.
