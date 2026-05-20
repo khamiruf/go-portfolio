@@ -141,13 +141,13 @@ On the other hand, watching them **perform** for a crowd of tourists felt uncomf
 But ok. At least Shinya *(our tour guide)* is making some money from it.
 
 ## Some notable food experiences
-<figure class="img-lg">
+<figure class="img-md">
   <img src="/assets/media/travel/shio_pan.jpg" alt="Shio Pan">
   <figcaption>Pan Maison, a bakery that specializes in creating shio pan with flavours. And also normal shio pan.</figcaption>
 </figure>
 The shio pan from Pan Maison is exceptional. Fluffy, lightly salted, with exactly the right amount of butter. The Melon Pan variant is also worth getting. I've eaten a lot of bread in my life and this is the one. I would eat it every day without complaint and I am not being dramatic.
 
-<figure class="img-lg">
+<figure class="img-md">
   <img src="/assets/media/travel/saize_tiramisu.jpg" alt="Saize Tiramisu">
   <figcaption>Tiramisu from Saizeriya, a Japanese chain restaurant. Cheap, but delicious!</figcaption>
 </figure>
