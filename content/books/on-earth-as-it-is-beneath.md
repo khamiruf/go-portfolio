@@ -2,6 +2,7 @@
 title: "On Earth As It Is Beneath"
 author: "Ana Paula Maia"
 isbn: "9781917260107"
+cover: "/assets/media/books/on-earth-as-it-is-beneath.jpg"
 status: "reading"
 progress: 38
 rating: 0
