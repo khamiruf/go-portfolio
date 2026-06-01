@@ -6,7 +6,7 @@ status: "read"
 rating: 2.5
 date_read: "2026-06-01"
 note: |
-  Genuinely unsure what I just read.
+  Genuinely unsure what I just read. The rating is only my opinion, and not a reflection of the Author's competency. Maybe this is just not for me.
 
   *The Coin* belongs to that category of literary fiction that is very aware of itself: opaque, and not particularly interested in explaining anything. **The Coin** itself, for instance. What is it? I finished the book. I still do not know. Maybe that is the point. The point did not land.
 
