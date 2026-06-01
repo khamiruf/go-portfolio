@@ -6,20 +6,16 @@ cover: "/assets/media/books/on-earth-as-it-is-beneath.jpg"
 status: "read"
 rating: 4
 date_read: "2026-06-01"
-note: |
-  Learnt about this book from the [International Booker Prize](https://thebookerprizes.com/the-booker-library/features/everything-to-know-international-booker-prize-2026-shortlist). Had not read the excerpt or synopsis, and this is my first book by a Brazilian author. So far, most of the characters are still a mystery, except for the main prison warden: Melquíades, who is both obnoxious and detestable.
+note: |  
+Picked this up from the [International Booker Prize shortlist](https://thebookerprizes.com/the-booker-library/features/everything-to-know-international-booker-prize-2026-shortlist) knowing nothing: no excerpt, no synopsis. First book by a Brazilian author. Went in blind.
 
-  Waiting to find out more...
+  Finished it in one weekend. Most characters stay deliberately opaque, which is fine, though the one who matters most does not. **Melquíades**, the prison warden, is obnoxious and detestable in equal measure, and entirely too skilled at being both. This is essentially Prison Break, with Bellick recast as the protagonist of his own deranged story. Isolation and unchecked power as the conditions; Melquíades as what they produce. The Colony's monotony does the rest: no amenities, no recreation, nothing resembling a life. No backstory required when the environment does all the work.
 
-  [Updates]
+  Good on Pablo for engineering his escape during the Full Moon hunt. Swapping attire with Melquíades was the smart play; Melquíades hitting a rock mid-chase and passing out was a convenient bonus.
 
-  Finished the book in one weekend. It reads like Prison Break, where Bellick (the prison warden) emulates Melquíades. Isolation and unchecked power drive humans to show who they truly are. The monotony of life in the Colony, the lack of amenities, the absence of anything resembling recreation; all of it shaped Melquíades into what he became: a psychopathic, deranged, skilled hunter.
+  The real peak is **Valdenio**: walking out of the compound with his ankle tag still on, bracing for an explosion that never comes. The entryway reads *"Discipline shall set us free"*, and he stood outside it muttering something like *"we will be free because we will all be dead."* And then he died. That, truly, was CINEMA. Brief research confirmed: this maps squarely onto Auschwitz and [*"Arbeit macht Frei"*](https://en.wikipedia.org/wiki/Arbeit_macht_frei). The resonance is not accidental.
 
-  Good on Pablo for making the escape during the Full Moon hunt. Smart enough to switch his attire with Melquíades, who fortunately (or unfortunately for himself) lost control of his vehicle during the chase, hit a rock, and passed out.
+  **Bronco Gil** is the MVP, the dependable hunter who never loses his head. Even with Melquíades holding the high ground, he put an arrow clean through his throat. With a bow. That's anime-level writing. He walks out of the compound, lands a job offer, and carries on with his life (one eye short, all dignity intact).
 
-  The peak of this story is when Valdenio left the compound with his ankle tag still on and found that he did not explode. The tagline "Discipline shall set us free" reads on the entryway to the camp, and he stood in fear, muttering something like "we will be free because we will all be dead". And then he died. That, truly, was CINEMA. Ok, after some brief research, this is very similar and points to *Auschwitz* and other Nazi concentration camps on the same tone as [*"Arbeit macht Frei"*](https://en.wikipedia.org/wiki/Arbeit_macht_frei).
-
-  Bronco Gil is the MVP. The dependable *Indian*. Man knows how to hunt boars, and even towards the end, when he was dead set on hunting Melquíades, he turned the situation around even with Melquíades holding the *high ground*. Got him RIGHT IN THE THROAT, WITH A BOW AND AN ARROW. That's anime-level writing man. Happy ending, though. He even got a job offer not long after leaving the compound. Talk about luck; this guy has it all, other than losing one eye.
-
-  Despite it being a short read, I truly enjoyed this. Now I only wish for it to be longer.
+  Short book. I want more of it.
 ---
