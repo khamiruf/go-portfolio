@@ -32,6 +32,7 @@
       <div class="book-info">
         <p class="book-title">{{.Title}}</p>
         <p class="book-author">{{.Author}}</p>
+        {{if .Translator}}<p class="book-translator">trans. {{.Translator}}</p>{{end}}
         {{if .Progress}}
         <div class="progress-bar"><div class="progress-fill" style="width: {{.Progress}}%"></div></div>
         <span class="progress-label">{{.Progress}}%</span>
@@ -58,6 +59,7 @@
       <div class="book-info">
         <p class="book-title">{{.Title}}</p>
         <p class="book-author">{{.Author}}</p>
+        {{if .Translator}}<p class="book-translator">trans. {{.Translator}}</p>{{end}}
         {{if .Rating}}<p class="book-rating">{{ratingDots .Rating}}</p>{{end}}
       </div>
     </a>
@@ -74,6 +76,7 @@
     <li data-tags="{{joinTags .Tags}}">
       <span class="book-title">{{.Title}}</span>
       <span class="book-author">{{.Author}}</span>
+      {{if .Translator}}<span class="book-translator">trans. {{.Translator}}</span>{{end}}
     </li>
     {{end}}
   </ul>

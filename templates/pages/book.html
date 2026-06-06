@@ -22,6 +22,7 @@
       {{end}}
       <h1 class="book-page-title">{{.Book.Title}}</h1>
       <p class="book-page-author">{{.Book.Author}}</p>
+      {{if .Book.Translator}}<p class="book-page-translator">trans. {{.Book.Translator}}</p>{{end}}
       <div class="book-page-stats">
         {{if .Book.DateRead}}<span>{{fmtDate .Book.DateRead}}</span>{{end}}
         {{if .Book.Progress}}<span>{{.Book.Progress}}% through</span>{{end}}
