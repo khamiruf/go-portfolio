@@ -382,6 +382,12 @@ main {
   color: var(--fg-muted);
 }
 
+.book-translator {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
 .book-rating {
   font-size: 0.55rem;
   color: var(--accent);
@@ -439,6 +445,13 @@ main {
 .want-list .book-author {
   font-size: var(--text-sm);
   color: var(--fg-muted);
+  flex-shrink: 0;
+}
+
+.want-list .book-translator {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  font-style: italic;
   flex-shrink: 0;
 }
 
@@ -710,6 +723,13 @@ article:not(.book-page) {
   font-size: var(--text-base);
   color: var(--fg-muted);
   margin-top: var(--space-xs);
+}
+
+.book-page-translator {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  font-style: italic;
+  margin-top: 2px;
 }
 
 .book-page-stats {

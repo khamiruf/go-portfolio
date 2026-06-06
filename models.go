@@ -4,7 +4,8 @@ import "html/template"
 
 type Book struct {
 	Title    string   `yaml:"title"`
-	Author   string   `yaml:"author"`
+	Author     string   `yaml:"author"`
+	Translator string   `yaml:"translator"`
 	ISBN     string   `yaml:"isbn"`
 	Cover    string   `yaml:"cover"`
 	Progress int      `yaml:"progress"`
