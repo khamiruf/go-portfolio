@@ -111,6 +111,7 @@ async function migrateBooks() {
       ISBN: { rich_text: richText(data.isbn) },
       Status: data.status ? { select: { name: String(data.status) } } : { select: null },
       Tags: { multi_select: multi(data.tags) },
+      Published: { checkbox: true },
     };
     if (data.progress != null) properties.Progress = { number: Number(data.progress) };
     if (data.rating != null) properties.Rating = { number: Number(data.rating) };

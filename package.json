@@ -22,6 +22,8 @@
     "gray-matter": "^4.0.3"
   },
   "overrides": {
-    "unified": "^11.0.5"
+    "notion-astro-loader": {
+      "unified": "^11.0.5"
+    }
   }
 }
