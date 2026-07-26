@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+
+const posts = (await getCollection('posts')).filter(
+  (p) => p.data.properties.Section === 'learnings',
+);
+---
+
+<BaseLayout title="Learnings" section="learnings">
+  <h1 class="page-heading">learnings</h1>
+  {posts.length > 0 ? (
+    <PostList entries={posts} section="learnings" />
+  ) : (
+    <p class="muted">Nothing here yet. Suspiciously quiet.</p>
+  )}
+</BaseLayout>

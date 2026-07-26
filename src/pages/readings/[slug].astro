@@ -1,0 +1,71 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { bookCover, ratingDots, slugify, dateStart, monthYear, readingStats, localizeAssets } from '../../lib/notion';
+
+export const getStaticPaths = (async () => {
+  const books = await getCollection('books');
+  // Only read/reading books get a detail page (matches the old Go build).
+  return books
+    .filter((b) => ['read', 'reading'].includes(b.data.properties.Status ?? ''))
+    .map((entry) => ({ params: { slug: slugify(entry.data.properties.Name) }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const p = entry.data.properties;
+const cover = await bookCover(entry);
+const noteHtml = localizeAssets(entry.rendered?.html?.trim() ?? '');
+const hasNote = noteHtml.length > 0;
+const { words, minutes } = readingStats(noteHtml);
+const dateRead = monthYear(dateStart(p['Date Read']));
+---
+
+<BaseLayout title={p.Name} section="readings">
+  <article class="book-page">
+    <a href="/readings/" class="book-back reveal">← readings</a>
+
+    <div class="book-page-header reveal">
+      <div class="book-page-cover-col">
+        {cover ? (
+          <>
+            <img class="book-page-cover-img" src={cover} alt=""
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+            <div class="book-page-cover-placeholder" style="display:none"><span>{p.Name}</span></div>
+          </>
+        ) : (
+          <div class="book-page-cover-placeholder"><span>{p.Name}</span></div>
+        )}
+      </div>
+      <div class="book-page-meta">
+        {p.Rating ? <p class="book-page-rating">{ratingDots(p.Rating)}</p> : null}
+        <h1 class="book-page-title">{p.Name}</h1>
+        <p class="book-page-author">{p.Author}</p>
+        {p.Translator && <p class="book-page-translator">trans. {p.Translator}</p>}
+        <div class="book-page-stats">
+          {dateRead && <span>{dateRead}</span>}
+          {p.Progress ? <span>{p.Progress}% through</span> : null}
+        </div>
+        {p.Tags && p.Tags.length > 0 && (
+          <div class="book-page-tags">
+            {p.Tags.map((tag) => <a href={`/readings/?tag=${tag}`} class="tag">{tag}</a>)}
+          </div>
+        )}
+      </div>
+    </div>
+
+    {hasNote ? (
+      <div class="book-page-review">
+        <div class="review-header reveal">
+          <p class="section-label">my notes</p>
+          {words > 0 && <span class="review-stats">{words} words · ~{minutes} min read</span>}
+        </div>
+        <div class="book-page-review-text prose reveal" set:html={noteHtml} />
+      </div>
+    ) : p.Status === 'read' ? (
+      <div class="book-page-review">
+        <p class="muted reveal">Nothing written down. Sometimes a book just sits with you.</p>
+      </div>
+    ) : null}
+  </article>
+</BaseLayout>

@@ -1,0 +1,27 @@
+{
+  "name": "khamiruf-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "setup:notion": "node --env-file=.env scripts/setup-notion.mjs",
+    "migrate": "node --env-file=.env scripts/migrate.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.18.0",
+    "notion-astro-loader": "^0.4.0",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@notionhq/client": "^5.23.0",
+    "@tryfabric/martian": "^1.2.4",
+    "gray-matter": "^4.0.3"
+  },
+  "overrides": {
+    "unified": "^11.0.5"
+  }
+}

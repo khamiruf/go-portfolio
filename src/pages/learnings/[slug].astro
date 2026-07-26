@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostArticle from '../../components/PostArticle.astro';
+import { slugify } from '../../lib/notion';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('posts');
+  return posts
+    .filter((p) => p.data.properties.Section === 'learnings')
+    .map((entry) => ({ params: { slug: slugify(entry.data.properties.Name) }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+---
+
+<BaseLayout title={entry.data.properties.Name} section="learnings">
+  <PostArticle entry={entry} />
+</BaseLayout>

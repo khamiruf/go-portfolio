@@ -1,0 +1,30 @@
+---
+import { slugify, dateStart, isoDate, type PostEntry } from '../lib/notion';
+
+export interface Props {
+  entries: PostEntry[];
+  section: string;
+  showDate?: boolean;
+}
+
+const { entries, section, showDate = true } = Astro.props;
+---
+
+<ul class={`post-list${showDate ? '' : ' post-list--no-date'}`}>
+  {entries.map((entry) => {
+    const p = entry.data.properties;
+    const slug = slugify(p.Name);
+    const date = isoDate(dateStart(p.Date));
+    return (
+      <li>
+        {showDate && <span class="date">{date}</span>}
+        <div class="post-meta">
+          <a href={`/${section}/${slug}/`}>{p.Name}</a>
+          {p.Tags && p.Tags.length > 0 && (
+            <span class="tags">{p.Tags.map((tag) => <span class="tag">{tag}</span>)}</span>
+          )}
+        </div>
+      </li>
+    );
+  })}
+</ul>

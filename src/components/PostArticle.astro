@@ -1,0 +1,26 @@
+---
+import { dateStart, isoDate, localizeAssets, readingStats, type PostEntry } from '../lib/notion';
+
+export interface Props {
+  entry: PostEntry;
+}
+
+const { entry } = Astro.props;
+const p = entry.data.properties;
+const html = localizeAssets(entry.rendered?.html ?? '');
+const date = isoDate(dateStart(p.Date));
+const { words, minutes } = readingStats(html);
+---
+
+<article>
+  <div class="article-header">
+    <h1>{p.Name}</h1>
+    <p class="meta">
+      {date && <span>{date}</span>}
+      {words > 0 && <><span>{words} words</span><span>{minutes} min read</span></>}
+      {p.Tags && p.Tags.map((tag) => <span class="tag">{tag}</span>)}
+    </p>
+  </div>
+  <div class="prose" id="post-body" set:html={html} />
+
+</article>

@@ -1,7 +1,10 @@
-public/
-go-portfolio
-*.exe
-*.exe~
+# Astro / Node
+node_modules/
+dist/
+.astro/
+.env
+.dev.vars
+
 .DS_Store
 .claude/
 .agents/

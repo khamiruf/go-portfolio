@@ -1,0 +1,41 @@
+---
+import { bookCover, ratingDots, slugify, type BookEntry } from '../lib/notion';
+
+export interface Props {
+  entry: BookEntry;
+  /** progress: show % bar (reading). rating: show dots (read). plain: neither. */
+  variant?: 'progress' | 'rating' | 'plain';
+}
+
+const { entry, variant = 'plain' } = Astro.props;
+const p = entry.data.properties;
+const cover = await bookCover(entry);
+const slug = slugify(p.Name);
+const tags = (p.Tags ?? []).join(',');
+---
+
+<a href={`/readings/${slug}/`} class="book-card reveal" data-tags={tags}>
+  <div class="book-cover">
+    {cover ? (
+      <>
+        <img src={cover} alt="" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="cover-placeholder" style="display:none"><span>{p.Name}</span></div>
+      </>
+    ) : (
+      <div class="cover-placeholder"><span>{p.Name}</span></div>
+    )}
+  </div>
+  <div class="book-info">
+    <p class="book-title">{p.Name}</p>
+    <p class="book-author">{p.Author}</p>
+    {p.Translator && <p class="book-translator">trans. {p.Translator}</p>}
+    {variant === 'progress' && p.Progress ? (
+      <>
+        <div class="progress-bar"><div class="progress-fill" style={`width: ${p.Progress}%`}></div></div>
+        <span class="progress-label">{p.Progress}%</span>
+      </>
+    ) : null}
+    {variant === 'rating' && p.Rating ? <p class="book-rating">{ratingDots(p.Rating)}</p> : null}
+  </div>
+</a>

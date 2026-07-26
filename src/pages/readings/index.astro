@@ -1,0 +1,100 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookCard from '../../components/BookCard.astro';
+
+const books = await getCollection('books');
+const byStatus = (s: string) => books.filter((b) => b.data.properties.Status === s);
+const reading = byStatus('reading');
+const read = byStatus('read');
+const want = byStatus('want-to-read');
+
+// Tag facets across all books (Go allTags / tagCounts).
+const counts = new Map<string, number>();
+for (const b of books) {
+  for (const tag of b.data.properties.Tags ?? []) {
+    counts.set(tag, (counts.get(tag) ?? 0) + 1);
+  }
+}
+const tags = [...counts.keys()].sort();
+---
+
+<BaseLayout title="Readings" section="readings">
+  <h1 class="page-heading">books</h1>
+
+  {tags.length > 0 && (
+    <div class="tag-filters">
+      <label class="tag-filter-label" for="tag-select">filter</label>
+      <select id="tag-select" class="tag-select">
+        <option value="all">all</option>
+        {tags.map((tag) => <option value={tag}>{tag} ({counts.get(tag)})</option>)}
+      </select>
+    </div>
+  )}
+
+  {reading.length > 0 && (
+    <section class="books-section" data-section="reading">
+      <p class="section-label">reading</p>
+      <div class="book-grid">
+        {reading.map((entry) => <BookCard entry={entry} variant="progress" />)}
+      </div>
+    </section>
+  )}
+
+  {read.length > 0 && (
+    <section class="books-section" data-section="read">
+      <p class="section-label">read</p>
+      <div class="book-grid">
+        {read.map((entry) => <BookCard entry={entry} variant="rating" />)}
+      </div>
+    </section>
+  )}
+
+  <section class="books-section" data-section="want">
+    <p class="section-label">want to read</p>
+    {want.length > 0 ? (
+      <ul class="want-list">
+        {want.map((entry) => {
+          const p = entry.data.properties;
+          return (
+            <li data-tags={(p.Tags ?? []).join(',')}>
+              <span class="book-title">{p.Name}</span>
+              <span class="book-author">{p.Author}</span>
+              {p.Translator && <span class="book-translator">trans. {p.Translator}</span>}
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      <p class="muted">Nothing queued up. This won't last long.</p>
+    )}
+  </section>
+
+  <script is:inline>
+    (function() {
+      var sel = document.getElementById('tag-select');
+      if (!sel) return;
+
+      function applyFilter(tag) {
+        sel.value = tag || 'all';
+        document.querySelectorAll('.book-card, .want-list li').forEach(function(el) {
+          if (!tag || tag === 'all') {
+            el.style.display = '';
+          } else {
+            var tags = el.dataset.tags ? el.dataset.tags.split(',') : [];
+            el.style.display = tags.indexOf(tag) !== -1 ? '' : 'none';
+          }
+        });
+        document.querySelectorAll('.books-section').forEach(function(section) {
+          var visible = section.querySelectorAll('.book-card:not([style*="display: none"]), .want-list li:not([style*="display: none"])');
+          section.style.display = visible.length === 0 ? 'none' : '';
+        });
+      }
+
+      sel.addEventListener('change', function() { applyFilter(sel.value); });
+
+      var initialTag = new URLSearchParams(window.location.search).get('tag');
+      if (initialTag) applyFilter(initialTag);
+    })();
+  </script>
+</BaseLayout>
