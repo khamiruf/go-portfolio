@@ -57,7 +57,9 @@ npm run build    # static output in dist/
 ## Day-to-day
 
 Add or edit content in Notion. New `Posts` need `Section` set and `Published`
-checked. Rebuild (locally or via the Cloudflare Pages deploy hook) to publish.
+checked; new `Books` need `Published` checked to appear. Rebuild (locally or via
+the Cloudflare Pages deploy hook) to publish. Unchecking `Published` hides an item
+on the next build.
 
 ## Deploy (Cloudflare Pages)
 
@@ -74,16 +76,21 @@ Content edits in Notion don't touch git, so a **Deploy Hook** rebuilds the site.
 1. **Create the Deploy Hook.** CF Pages → your project → **Settings → Builds &
    deployments → Deploy hooks → Add** → name it, pick the production branch →
    copy the URL. Treat this URL as a secret (anyone with it can trigger builds).
-2. **Wire a Notion automation to it.** Open the **Posts** database → **•••  →
-   Automations → New automation**:
+2. **Wire a Notion automation to it — in BOTH databases.** Both `Posts` and
+   `Books` have a `Published` checkbox. In each: **•••  → Automations → New
+   automation**:
    - **Trigger:** `Published` **is set to** checked. (Gate on this explicit
      signal — do NOT trigger on "any edit", or Notion fires on every autosave and
      you get a rebuild storm.)
-   - **Action:** **Send webhook** → paste the Deploy Hook URL, method `POST`.
-     No body or headers needed — the hook ignores them.
-3. **For editing already-published content:** add a second automation driven by a
-   **Button** property (e.g. "Deploy now") with the same Send-webhook action, and
-   press it when you want changes to go live. This keeps rebuilds tied to intent.
+   - **Action:** **Send webhook** → paste the **same** Deploy Hook URL, method
+     `POST`. No body or headers needed — the hook ignores them.
+
+   One hook, two automations (Posts + Books). Any trigger rebuilds the whole site
+   (the build re-pulls both databases).
+3. **For editing already-published content** (e.g. fixing a note without touching
+   a property): property automations don't fire on page-body edits, so rebuild
+   manually — `curl -X POST "<hook-url>"`, or CF Pages → Deployments → **Create
+   deployment**, or toggle `Published` off/on.
 
 Requires Notion **automations** (paid plans). If unavailable, fall back to a cron
 (GitHub Action or CF cron trigger) that `POST`s the Deploy Hook every ~30–60 min.
