@@ -61,7 +61,32 @@ checked. Rebuild (locally or via the Cloudflare Pages deploy hook) to publish.
 
 ## Deploy (Cloudflare Pages)
 
-- Framework preset: **Astro**. Build: `npm run build`. Output dir: `dist`.
-- Set build env vars: `NOTION_TOKEN`, `NOTION_BOOKS_DB`, `NOTION_POSTS_DB`.
-- Add a **Deploy Hook**; trigger it from a Notion automation (or a cron) so
-  content changes rebuild the site.
+1. Connect the repo in Cloudflare Pages. Framework preset: **Astro**.
+   Build command `npm run build`, output dir `dist`.
+2. Build env vars: `NOTION_TOKEN`, `NOTION_BOOKS_DB`, `NOTION_POSTS_DB`.
+   (Node is pinned to 22 via `.nvmrc`.)
+3. Push to the connected branch → Cloudflare builds and deploys.
+
+## Rebuild when Notion changes (event-driven)
+
+Content edits in Notion don't touch git, so a **Deploy Hook** rebuilds the site.
+
+1. **Create the Deploy Hook.** CF Pages → your project → **Settings → Builds &
+   deployments → Deploy hooks → Add** → name it, pick the production branch →
+   copy the URL. Treat this URL as a secret (anyone with it can trigger builds).
+2. **Wire a Notion automation to it.** Open the **Posts** database → **•••  →
+   Automations → New automation**:
+   - **Trigger:** `Published` **is set to** checked. (Gate on this explicit
+     signal — do NOT trigger on "any edit", or Notion fires on every autosave and
+     you get a rebuild storm.)
+   - **Action:** **Send webhook** → paste the Deploy Hook URL, method `POST`.
+     No body or headers needed — the hook ignores them.
+3. **For editing already-published content:** add a second automation driven by a
+   **Button** property (e.g. "Deploy now") with the same Send-webhook action, and
+   press it when you want changes to go live. This keeps rebuilds tied to intent.
+
+Requires Notion **automations** (paid plans). If unavailable, fall back to a cron
+(GitHub Action or CF cron trigger) that `POST`s the Deploy Hook every ~30–60 min.
+
+Rebuilds are cheap: Astro's Content Layer caches by `last_edited_time`, so only
+changed pages re-render.
