@@ -15,6 +15,8 @@ const books = defineCollection({
     database_id: import.meta.env.NOTION_BOOKS_DB,
     // Newest reads first; unread ones (no date) sink to the bottom.
     sorts: [{ property: 'Date Read', direction: 'descending' }],
+    // Only surface published books (also the deploy-trigger, like Posts).
+    filter: { property: 'Published', checkbox: { equals: true } },
   }),
   schema: notionPageSchema({
     properties: z.object({
@@ -27,6 +29,7 @@ const books = defineCollection({
       Rating: t.number.nullable(),
       'Date Read': t.date.nullable(),
       Tags: t.multi_select,
+      Published: t.checkbox,
     }),
   }),
 });
