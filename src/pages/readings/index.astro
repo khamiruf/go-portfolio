@@ -2,8 +2,16 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BookCard from '../../components/BookCard.astro';
+import { dateStart } from '../../lib/notion';
 
-const books = await getCollection('books');
+// The Notion loader's content-layer cache can leave previously-synced entries
+// in stale positions (it only repositions pages whose last_edited_time
+// changed), so re-sort here rather than trusting collection order.
+const books = (await getCollection('books')).sort((a, b) => {
+  const aDate = dateStart(a.data.properties['Date Read'])?.getTime() ?? -Infinity;
+  const bDate = dateStart(b.data.properties['Date Read'])?.getTime() ?? -Infinity;
+  return bDate - aDate;
+});
 const byStatus = (s: string) => books.filter((b) => b.data.properties.Status === s);
 const reading = byStatus('reading');
 const read = byStatus('read');

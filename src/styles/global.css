@@ -395,6 +395,12 @@ main {
   margin-top: 2px;
 }
 
+.book-date {
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .progress-bar {
   height: 2px;
   background: var(--border);
