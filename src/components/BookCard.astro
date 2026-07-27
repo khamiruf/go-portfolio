@@ -1,5 +1,5 @@
 ---
-import { bookCover, ratingDots, slugify, type BookEntry } from '../lib/notion';
+import { bookCover, ratingDots, slugify, dateStart, isoDate, type BookEntry } from '../lib/notion';
 
 export interface Props {
   entry: BookEntry;
@@ -12,6 +12,7 @@ const p = entry.data.properties;
 const cover = await bookCover(entry);
 const slug = slugify(p.Name);
 const tags = (p.Tags ?? []).join(',');
+const dateRead = isoDate(dateStart(p['Date Read']));
 ---
 
 <a href={`/readings/${slug}/`} class="book-card reveal" data-tags={tags}>
@@ -37,5 +38,6 @@ const tags = (p.Tags ?? []).join(',');
       </>
     ) : null}
     {variant === 'rating' && p.Rating ? <p class="book-rating">{ratingDots(p.Rating)}</p> : null}
+    {variant === 'rating' && dateRead ? <p class="book-date">{dateRead}</p> : null}
   </div>
 </a>

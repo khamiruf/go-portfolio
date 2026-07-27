@@ -37,12 +37,6 @@ export function isoDate(d: Date | null): string {
   return d.toISOString().slice(0, 10);
 }
 
-/** "January 2006" style — matches the old Go `fmtDate`. */
-export function monthYear(d: Date | null): string {
-  if (!d) return '';
-  return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-}
-
 /**
  * Legacy images live in public/assets and were referenced by absolute URL so
  * Notion would accept them. Strip the host back to a root-relative path so they

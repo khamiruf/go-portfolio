@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { bookCover, ratingDots, slugify, dateStart, monthYear, readingStats, localizeAssets } from '../../lib/notion';
+import { bookCover, ratingDots, slugify, dateStart, isoDate, readingStats, localizeAssets } from '../../lib/notion';
 
 export const getStaticPaths = (async () => {
   const books = await getCollection('books');
@@ -18,7 +18,7 @@ const cover = await bookCover(entry);
 const noteHtml = localizeAssets(entry.rendered?.html?.trim() ?? '');
 const hasNote = noteHtml.length > 0;
 const { words, minutes } = readingStats(noteHtml);
-const dateRead = monthYear(dateStart(p['Date Read']));
+const dateRead = isoDate(dateStart(p['Date Read']));
 ---
 
 <BaseLayout title={p.Name} section="readings">
