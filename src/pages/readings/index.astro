@@ -28,7 +28,10 @@ const tags = [...counts.keys()].sort();
 ---
 
 <BaseLayout title="Readings" section="readings">
-  <h1 class="page-heading">books</h1>
+  <div class="page-heading-row">
+    <h1 class="page-heading">Books</h1>
+    <span class="page-heading-meta">{books.length} {books.length === 1 ? 'entry' : 'entries'}</span>
+  </div>
 
   {tags.length > 0 && (
     <div class="tag-filters">
@@ -42,7 +45,7 @@ const tags = [...counts.keys()].sort();
 
   {reading.length > 0 && (
     <section class="books-section" data-section="reading">
-      <p class="section-label">reading</p>
+      <p class="section-label">Reading<span class="section-count">{reading.length}</span></p>
       <div class="book-grid">
         {reading.map((entry) => <BookCard entry={entry} variant="progress" />)}
       </div>
@@ -51,7 +54,7 @@ const tags = [...counts.keys()].sort();
 
   {read.length > 0 && (
     <section class="books-section" data-section="read">
-      <p class="section-label">read</p>
+      <p class="section-label">Read<span class="section-count">{read.length}</span></p>
       <div class="book-grid">
         {read.map((entry) => <BookCard entry={entry} variant="rating" />)}
       </div>
@@ -59,7 +62,7 @@ const tags = [...counts.keys()].sort();
   )}
 
   <section class="books-section" data-section="want">
-    <p class="section-label">want to read</p>
+    <p class="section-label">Want to read<span class="section-count">{want.length}</span></p>
     {want.length > 0 ? (
       <ul class="want-list">
         {want.map((entry) => {

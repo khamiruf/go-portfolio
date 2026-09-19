@@ -6,13 +6,13 @@ export interface Props {
   section?: string;
 }
 
-const { title, section } = Astro.props;
+const { title, section = 'home' } = Astro.props;
 const navSections = ['readings', 'projects', 'learnings', 'travel'];
 const year = new Date().getFullYear();
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light" data-section={section}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -20,10 +20,10 @@ const year = new Date().getFullYear();
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Gambarino&family=Epilogue:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
   <script is:inline>
     (function() {
-      var t = localStorage.getItem('theme') || 'dark';
+      var t = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
@@ -32,7 +32,7 @@ const year = new Date().getFullYear();
   <div id="read-progress" aria-hidden="true"></div>
   <a href="#main-content" class="skip-link">Skip to content</a>
   <header class="site-header" id="site-header">
-    <a href="/" class="site-name">khamiruf</a>
+    <a href="/" class="site-name"><span class="site-name-mark" aria-hidden="true"></span>khamiruf</a>
     <nav id="primary-nav">
       <div class="nav-inner">
         {navSections.map((s) => (
@@ -60,10 +60,13 @@ const year = new Date().getFullYear();
     <slot />
   </main>
   <footer class="site-footer">
-    <p>© {year} khamiruf</p>
-    <nav class="footer-nav" aria-label="Footer navigation">
-      {navSections.map((s) => <a href={`/${s}/`}>{s}</a>)}
-    </nav>
+    <div>
+      <p>© {year} khamiruf</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        {navSections.map((s) => <a href={`/${s}/`}>{s}</a>)}
+      </nav>
+    </div>
+    <span class="footer-mark" aria-hidden="true">‹ EOF ›</span>
   </footer>
   <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
 

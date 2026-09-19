@@ -9,7 +9,10 @@ const posts = (await getCollection('posts')).filter(
 ---
 
 <BaseLayout title="Travel" section="travel">
-  <h1 class="page-heading">travel</h1>
+  <div class="page-heading-row">
+    <h1 class="page-heading">Travel</h1>
+    <span class="page-heading-meta">{posts.length} {posts.length === 1 ? 'entry' : 'entries'}</span>
+  </div>
   {posts.length > 0 ? (
     <PostList entries={posts} section="travel" />
   ) : (
