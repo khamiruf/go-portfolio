@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,wght@0,400..900;1,400..900&display=swap');
 
 /* ── Tokens ──
    Editorial / technical-specimen palette: warm paper light mode, inverted
@@ -29,7 +29,7 @@
   --space-3xl: 64px;
   --space-4xl: 96px;
 
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --font-body: 'Inter', system-ui, sans-serif;
 
@@ -364,9 +364,9 @@ main {
 .intro-headline {
   font-family: var(--font-display);
   font-size: var(--text-display);
-  font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
   color: var(--fg);
   margin-bottom: var(--space-xl);
 }
@@ -959,7 +959,7 @@ article:not(.book-page) {
 .book-page-title {
   font-family: var(--font-display);
   font-size: clamp(var(--text-xl), 4vw + 0.25rem, var(--text-display));
-  font-weight: 700;
+  font-weight: 800;
   color: var(--fg);
   letter-spacing: -0.02em;
   line-height: 1.1;
