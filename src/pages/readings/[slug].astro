@@ -23,7 +23,7 @@ const dateRead = isoDate(dateStart(p['Date Read']));
 
 <BaseLayout title={p.Name} section="readings">
   <article class="book-page">
-    <a href="/readings/" class="book-back reveal">← readings</a>
+    <a href="/readings/" class="book-back reveal">← Readings</a>
 
     <div class="book-page-header reveal">
       <div class="book-page-cover-col">
@@ -57,7 +57,7 @@ const dateRead = isoDate(dateStart(p['Date Read']));
     {hasNote ? (
       <div class="book-page-review">
         <div class="review-header reveal">
-          <p class="section-label">my notes</p>
+          <p class="section-label">My notes</p>
           {words > 0 && <span class="review-stats">{words} words · ~{minutes} min read</span>}
         </div>
         <div class="book-page-review-text prose reveal" set:html={noteHtml} />
