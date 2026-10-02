@@ -80,10 +80,20 @@ export function dateStart(d: NotionDate): Date | null {
   return d.start instanceof Date ? d.start : new Date(d.start);
 }
 
+// en-CA formats as YYYY-MM-DD. Dates are shown in Singapore time: a Notion
+// date-only value parses as UTC midnight (still the same day at UTC+8), and a
+// date with a time no longer slips back a day when it falls before 08:00 SGT.
+const siteDate = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Asia/Singapore',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
 /** "2026-06-10" style — matches the old post/list `Date` display. */
 export function isoDate(d: Date | null): string {
   if (!d) return '';
-  return d.toISOString().slice(0, 10);
+  return siteDate.format(d);
 }
 
 /** Strip tags and collapse whitespace — for meta descriptions. */
