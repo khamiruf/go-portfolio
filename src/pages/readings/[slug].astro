@@ -7,7 +7,7 @@ import { bookCover, ratingDots, slugFor, dateStart, isoDate, readingStats, prepa
 
 export const getStaticPaths = (async () => {
   const books = await getCollection('books');
-  // Only read/reading books get a detail page (matches the old Go build).
+  // Only read/reading books get a detail page.
   return Promise.all(
     books
       .filter((b) => ['read', 'reading'].includes(b.data.properties.Status ?? ''))
