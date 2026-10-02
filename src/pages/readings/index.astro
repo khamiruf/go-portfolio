@@ -17,7 +17,6 @@ const reading = byStatus('reading');
 const read = byStatus('read');
 const want = byStatus('want-to-read');
 
-// Tag facets across all books (Go allTags / tagCounts).
 const counts = new Map<string, number>();
 for (const b of books) {
   for (const tag of b.data.properties.Tags ?? []) {

@@ -19,8 +19,7 @@ if (missing.length > 0) {
 
 /**
  * Books collection — one Notion page per book. Page body = the reading note.
- * Cover art comes from the Notion page cover, or is derived from the ISBN at
- * render time (openlibrary), mirroring the old Go behaviour.
+ * Covers are resolved at render time by `bookCover` (src/lib/notion.ts).
  */
 const books = defineCollection({
   loader: notionLoader({
@@ -28,7 +27,7 @@ const books = defineCollection({
     database_id: import.meta.env.NOTION_BOOKS_DB,
     // Newest reads first; unread ones (no date) sink to the bottom.
     sorts: [{ property: 'Date Read', direction: 'descending' }],
-    // Only surface published books (also the deploy-trigger, like Posts).
+    // Only surface published books.
     filter: { property: 'Published', checkbox: { equals: true } },
   }),
   schema: notionPageSchema({

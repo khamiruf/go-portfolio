@@ -56,7 +56,6 @@ const year = new Date().getFullYear();
         t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
       document.documentElement.setAttribute('data-theme', t);
-      // Match the phone's browser bar to the page background.
       document.querySelector('meta[name="theme-color"]').content = t === 'dark' ? '#15140F' : '#F7F6F1';
     })();
   </script>

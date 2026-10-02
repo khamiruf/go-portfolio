@@ -817,7 +817,6 @@ article:not(.book-page) {
   overflow-wrap: break-word;
 }
 
-/* Wide tables scroll inside the column instead of overflowing the page. */
 .prose table {
   display: block;
   max-width: 100%;
@@ -1213,7 +1212,7 @@ article:not(.book-page) {
     gap: 0;
   }
 
-  /* Divider sits inside the clipped area so nothing shows while closed. */
+  /* Inside the clipped area, so the divider is hidden while collapsed. */
   #primary-nav .nav-inner a:first-child {
     margin-top: var(--space-sm);
     border-top: 1px solid var(--border);
@@ -1256,7 +1255,6 @@ article:not(.book-page) {
     height: 44px;
   }
 
-  /* 44px touch targets for the header controls. */
   .header-controls {
     gap: var(--space-sm);
   }
@@ -1279,7 +1277,6 @@ article:not(.book-page) {
     border-color: transparent;
   }
 
-  /* Small links get a taller hit area without changing the layout. */
   .footer-nav {
     gap: 0 var(--space-lg);
   }
@@ -1293,7 +1290,6 @@ article:not(.book-page) {
     margin-bottom: var(--space-2xl);
   }
 
-  /* Title, author and translator stack instead of squeezing into columns. */
   .want-list li {
     flex-direction: column;
     gap: 2px;

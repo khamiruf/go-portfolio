@@ -12,7 +12,7 @@ export const POST_SECTIONS = ['projects', 'learnings', 'travel'] as const;
 export type PostSection = (typeof POST_SECTIONS)[number];
 
 /**
- * Slugify a title into the same shape the old Go generator used for filenames:
+ * Slugify a title the way the previous site did, so existing URLs keep working:
  * lowercase, apostrophes dropped (not hyphenated), everything else collapsed to
  * single hyphens. e.g. "I'm Glad My Mom Died" -> "im-glad-my-mom-died".
  */
@@ -66,7 +66,7 @@ export async function hrefFor(entry: BookEntry | PostEntry): Promise<string> {
   return `/${section}/${await slugFor(entry)}/`;
 }
 
-/** Render an integer 0–5 rating as filled/empty dots (Go `ratingDots`). */
+/** Render an integer 0–5 rating as filled/empty dots. */
 export function ratingDots(r: number | null | undefined): string {
   if (!r) return '';
   return '●'.repeat(r) + '○'.repeat(5 - r);
@@ -90,7 +90,7 @@ const siteDate = new Intl.DateTimeFormat('en-CA', {
   day: '2-digit',
 });
 
-/** "2026-06-10" style — matches the old post/list `Date` display. */
+/** "2026-06-10" style. */
 export function isoDate(d: Date | null): string {
   if (!d) return '';
   return siteDate.format(d);
@@ -189,7 +189,7 @@ export function readingStats(html: string): { words: number; minutes: number } {
 
 /**
  * Resolve a book cover URL. Prefer the stable OpenLibrary cover derived from the
- * ISBN (as the Go build did); fall back to the Notion page cover (downloaded and
+ * ISBN; fall back to the Notion page cover (downloaded and
  * optimized through astro:assets); otherwise none.
  *
  * `default=false` makes OpenLibrary 404 when it has no cover, instead of
