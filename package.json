@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "setup:notion": "node --env-file=.env scripts/setup-notion.mjs",
-    "migrate": "node --env-file=.env scripts/migrate.mjs"
+    "migrate": "node --env-file=.env scripts/migrate.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "astro": "^5.18.0",
