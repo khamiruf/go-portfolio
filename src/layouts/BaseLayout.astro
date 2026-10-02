@@ -1,13 +1,30 @@
 ---
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/inter/wght-italic.css';
+import '@fontsource/space-mono/400.css';
+import '@fontsource/space-mono/400-italic.css';
+import '@fontsource/space-mono/700.css';
+import '@fontsource/space-mono/700-italic.css';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import '../styles/global.css';
+import { SECTIONS } from '../lib/notion';
 
 export interface Props {
   title?: string;
+  description?: string;
   section?: string;
+  type?: 'website' | 'article';
 }
 
-const { title, section = 'home' } = Astro.props;
-const navSections = ['readings', 'projects', 'learnings', 'travel'];
+const DEFAULT_DESCRIPTION = 'Backend engineer. Reads too much. Occasionally boards a plane.';
+const {
+  title,
+  description = DEFAULT_DESCRIPTION,
+  section = 'home',
+  type = 'website',
+} = Astro.props;
+const fullTitle = title ? `${title} — khamiruf` : 'khamiruf';
+const canonical = new URL(Astro.url.pathname, Astro.site);
 const year = new Date().getFullYear();
 ---
 
@@ -16,14 +33,27 @@ const year = new Date().getFullYear();
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>{title ? `${title} — khamiruf` : 'khamiruf'}</title>
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content="khamiruf" />
+  <meta property="og:title" content={title ?? 'khamiruf'} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta name="twitter:card" content="summary" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+  <link rel="alternate" type="application/rss+xml" title="khamiruf" href="/rss.xml" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
   <script is:inline>
+    // Runs before first paint so the page never flashes the wrong theme.
     (function() {
-      var t = localStorage.getItem('theme') || 'light';
+      var t;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
       document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
@@ -33,23 +63,24 @@ const year = new Date().getFullYear();
   <a href="#main-content" class="skip-link">Skip to content</a>
   <header class="site-header" id="site-header">
     <a href="/" class="site-name"><span class="site-name-mark" aria-hidden="true"></span>khamiruf</a>
-    <nav id="primary-nav">
+    <nav id="primary-nav" aria-label="Primary">
       <div class="nav-inner">
-        {navSections.map((s) => (
+        {SECTIONS.map((s) => (
           <a href={`/${s}/`} aria-current={section === s ? 'page' : undefined}>{s}</a>
         ))}
       </div>
     </nav>
     <div class="header-controls">
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-        <svg id="theme-icon-dark" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="theme-icon-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
-        <svg id="theme-icon-light" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="display:none">
+        <svg class="theme-icon-moon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
           <path d="M13.5 8.5A5.5 5.5 0 0 1 6 2.2a6 6 0 1 0 7.5 6.3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+      <button class="hamburger" id="hamburger" type="button" aria-label="Open menu"
+              aria-expanded="false" aria-controls="primary-nav">
         <span class="ham-line"></span>
         <span class="ham-line"></span>
         <span class="ham-line"></span>
@@ -63,131 +94,16 @@ const year = new Date().getFullYear();
     <div>
       <p>© {year} khamiruf</p>
       <nav class="footer-nav" aria-label="Footer navigation">
-        {navSections.map((s) => <a href={`/${s}/`}>{s}</a>)}
+        {SECTIONS.map((s) => <a href={`/${s}/`}>{s}</a>)}
+        <a href="/rss.xml">rss</a>
       </nav>
     </div>
     <span class="footer-mark" aria-hidden="true">‹ EOF ›</span>
   </footer>
-  <button class="back-to-top" id="back-to-top" aria-label="Back to top">↑</button>
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">↑</button>
 
-  <script is:inline>
-    // Theme toggle
-    (function() {
-      var toggle = document.getElementById('theme-toggle');
-      var dark = document.getElementById('theme-icon-dark');
-      var light = document.getElementById('theme-icon-light');
-      var html = document.documentElement;
-      function updateToggle(theme) {
-        if (theme === 'dark') {
-          dark.style.display = '';
-          light.style.display = 'none';
-          toggle.setAttribute('aria-label', 'Switch to light mode');
-        } else {
-          dark.style.display = 'none';
-          light.style.display = '';
-          toggle.setAttribute('aria-label', 'Switch to dark mode');
-        }
-      }
-      updateToggle(html.getAttribute('data-theme'));
-      toggle.addEventListener('click', function() {
-        var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateToggle(next);
-      });
-    })();
-
-    // Scroll reveal
-    (function() {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            observer.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
-
-      document.querySelectorAll('.post-list, .want-list').forEach(function(list) {
-        list.querySelectorAll('li').forEach(function(li, i) {
-          li.classList.add('reveal');
-          li.style.transitionDelay = Math.min(i * 45, 180) + 'ms';
-          observer.observe(li);
-        });
-      });
-
-      document.querySelectorAll('.book-grid').forEach(function(grid) {
-        grid.querySelectorAll('.book-card').forEach(function(card, i) {
-          card.classList.add('reveal');
-          card.style.transitionDelay = Math.min(i * 55, 330) + 'ms';
-          observer.observe(card);
-        });
-      });
-
-      document.querySelectorAll('.prose > *').forEach(function(el) {
-        el.classList.add('reveal');
-        observer.observe(el);
-      });
-
-      document.querySelectorAll('.section-label, .page-heading, .intro, .book-page-header').forEach(function(el) {
-        el.classList.add('reveal');
-        observer.observe(el);
-      });
-
-      // observe any elements already marked reveal by templates
-      document.querySelectorAll('.reveal').forEach(function(el) {
-        observer.observe(el);
-      });
-    })();
-
-    // Hamburger
-    (function() {
-      var btn = document.getElementById('hamburger');
-      var nav = document.getElementById('primary-nav');
-      if (!btn || !nav) return;
-      function close() {
-        nav.classList.remove('open');
-        btn.setAttribute('aria-expanded', 'false');
-        btn.setAttribute('aria-label', 'Open menu');
-      }
-      btn.addEventListener('click', function() {
-        var open = nav.classList.toggle('open');
-        btn.setAttribute('aria-expanded', String(open));
-        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      });
-      nav.querySelectorAll('a').forEach(function(a) {
-        a.addEventListener('click', close);
-      });
-      document.addEventListener('click', function(e) {
-        if (!nav.contains(e.target) && !btn.contains(e.target)) close();
-      });
-    })();
-
-    // Back to top
-    (function() {
-      var btn = document.getElementById('back-to-top');
-      if (!btn) return;
-      window.addEventListener('scroll', function() {
-        btn.classList.toggle('visible', window.scrollY > 400);
-      }, { passive: true });
-      btn.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    })();
-
-    // Reading progress bar
-    (function() {
-      var bar = document.getElementById('read-progress');
-      if (!bar || !document.getElementById('post-body')) return;
-      function update() {
-        var pct = Math.round((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight * 100);
-        bar.style.width = pct + '%';
-      }
-      window.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('load', update);
-      update();
-    })();
+  <script>
+    import '../scripts/site';
   </script>
 </body>
 </html>

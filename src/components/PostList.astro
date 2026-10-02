@@ -1,27 +1,36 @@
 ---
-import { slugify, dateStart, isoDate, type PostEntry } from '../lib/notion';
+import { hrefFor, dateStart, isoDate, type PostEntry } from '../lib/notion';
 
 export interface Props {
   entries: PostEntry[];
-  section: string;
   showDate?: boolean;
+  /** Prefix each title with its section (for mixed lists like "Latest"). */
+  showSection?: boolean;
 }
 
-const { entries, section, showDate = true } = Astro.props;
+const { entries, showDate = true, showSection = false } = Astro.props;
+const items = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    href: await hrefFor(entry),
+    date: isoDate(dateStart(entry.data.properties.Date)),
+  })),
+);
 ---
 
 <ul class={`post-list${showDate ? '' : ' post-list--no-date'}`}>
-  {entries.map((entry) => {
+  {items.map(({ entry, href, date }) => {
     const p = entry.data.properties;
-    const slug = slugify(p.Name);
-    const date = isoDate(dateStart(p.Date));
     return (
       <li>
-        {showDate && <span class="date">{date}</span>}
+        {showDate && <time class="date" datetime={date}>{date}</time>}
         <div class="post-meta">
-          <a href={`/${section}/${slug}/`}>{p.Name}</a>
-          {p.Tags && p.Tags.length > 0 && (
-            <span class="tags">{p.Tags.map((tag) => <span class="tag">{tag}</span>)}</span>
+          <a href={href}>{p.Name}</a>
+          {(showSection || (p.Tags && p.Tags.length > 0)) && (
+            <span class="tags">
+              {showSection && <span class="tag">{p.Section}</span>}
+              {p.Tags?.map((tag) => <span class="tag">{tag}</span>)}
+            </span>
           )}
         </div>
       </li>

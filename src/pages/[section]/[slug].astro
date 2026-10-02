@@ -1,0 +1,31 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostArticle from '../../components/PostArticle.astro';
+import { POST_SECTIONS, excerpt, slugFor, type PostSection } from '../../lib/notion';
+
+export const getStaticPaths = (async () => {
+  const posts = (await getCollection('posts')).filter((p) =>
+    (POST_SECTIONS as readonly string[]).includes(p.data.properties.Section ?? ''),
+  );
+  return Promise.all(
+    posts.map(async (entry) => ({
+      params: { section: entry.data.properties.Section as PostSection, slug: await slugFor(entry) },
+      props: { entry },
+    })),
+  );
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { section } = Astro.params;
+---
+
+<BaseLayout
+  title={entry.data.properties.Name}
+  description={excerpt(entry.rendered?.html ?? '')}
+  section={section}
+  type="article"
+>
+  <PostArticle entry={entry} />
+</BaseLayout>

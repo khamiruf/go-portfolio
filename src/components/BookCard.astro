@@ -1,5 +1,6 @@
 ---
-import { bookCover, ratingDots, slugify, dateStart, isoDate, type BookEntry } from '../lib/notion';
+import BookCover from './BookCover.astro';
+import { bookCover, ratingDots, hrefFor, dateStart, isoDate, type BookEntry } from '../lib/notion';
 
 export interface Props {
   entry: BookEntry;
@@ -10,22 +11,14 @@ export interface Props {
 const { entry, variant = 'plain' } = Astro.props;
 const p = entry.data.properties;
 const cover = await bookCover(entry);
-const slug = slugify(p.Name);
+const href = await hrefFor(entry);
 const tags = (p.Tags ?? []).join(',');
-const dateRead = isoDate(dateStart(p['Date Read']));
+const read = dateStart(p['Date Read']);
 ---
 
-<a href={`/readings/${slug}/`} class="book-card reveal" data-tags={tags}>
+<a href={href} class="book-card" data-reveal data-tags={tags}>
   <div class="book-cover">
-    {cover ? (
-      <>
-        <img src={cover} alt="" loading="lazy"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-        <div class="cover-placeholder" style="display:none"><span>{p.Name}</span></div>
-      </>
-    ) : (
-      <div class="cover-placeholder"><span>{p.Name}</span></div>
-    )}
+    <BookCover src={cover} title={p.Name} placeholderClass="cover-placeholder" />
   </div>
   <div class="book-info">
     <p class="book-title">{p.Name}</p>
@@ -33,11 +26,16 @@ const dateRead = isoDate(dateStart(p['Date Read']));
     {p.Translator && <p class="book-translator">trans. {p.Translator}</p>}
     {variant === 'progress' && p.Progress ? (
       <>
-        <div class="progress-bar"><div class="progress-fill" style={`width: ${p.Progress}%`}></div></div>
-        <span class="progress-label">{p.Progress}%</span>
+        <div class="progress-bar" role="progressbar" aria-label={`${p.Name} progress`}
+             aria-valuenow={p.Progress} aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-fill" style={`width: ${p.Progress}%`}></div>
+        </div>
+        <span class="progress-label" aria-hidden="true">{p.Progress}%</span>
       </>
     ) : null}
-    {variant === 'rating' && p.Rating ? <p class="book-rating">{ratingDots(p.Rating)}</p> : null}
-    {variant === 'rating' && dateRead ? <p class="book-date">{dateRead}</p> : null}
+    {variant === 'rating' && p.Rating ? (
+      <p class="book-rating" aria-label={`Rated ${p.Rating} out of 5`}>{ratingDots(p.Rating)}</p>
+    ) : null}
+    {variant === 'rating' && read ? <p class="book-date"><time datetime={isoDate(read)}>{isoDate(read)}</time></p> : null}
   </div>
 </a>
