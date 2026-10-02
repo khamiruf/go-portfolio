@@ -15,8 +15,6 @@ export default defineConfig({
     // an hour. With static output there is no runtime image endpoint, so the
     // breadth has no request-forgery exposure.
     remotePatterns: [{ protocol: 'https' }],
-    // Sharp, plus a long-edge cap so full-resolution Notion uploads are
-    // shrunk on every build (see src/lib/image-service.ts).
     service: { entrypoint: './src/lib/image-service.ts' },
   },
 });
