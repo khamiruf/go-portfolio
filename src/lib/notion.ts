@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { resolve, sep } from 'node:path';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { fileToImageAsset, fileToUrl } from 'notion-astro-loader';
 import sharp from 'sharp';
@@ -96,23 +96,51 @@ export function isoDate(d: Date | null): string {
   return siteDate.format(d);
 }
 
-/** Strip tags and collapse whitespace — for meta descriptions. */
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ',
+};
+
+/** Decode character references (rehype emits e.g. `&#x26;` for "&"). */
+function decodeEntities(text: string): string {
+  return text.replace(/&(#x[0-9a-f]+|#[0-9]+|[a-z]+);/gi, (match, ref: string) => {
+    if (ref[0] === '#') {
+      const code = ref[1] === 'x' || ref[1] === 'X' ? parseInt(ref.slice(2), 16) : parseInt(ref.slice(1), 10);
+      return code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : match;
+    }
+    return NAMED_ENTITIES[ref.toLowerCase()] ?? match;
+  });
+}
+
+/**
+ * Plain-text summary of rendered HTML — for meta descriptions and RSS. The
+ * result is unescaped text; Astro and @astrojs/rss escape it on output.
+ */
 export function excerpt(html: string, max = 160): string {
-  const text = html
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&[a-z#0-9]+;/gi, ' ')
+  const text = decodeEntities(html.replace(/<[^>]+>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim();
   return text.length > max ? `${text.slice(0, max - 1).replace(/\s+\S*$/, '')}…` : text;
 }
 
 const sizeCache = new Map<string, Promise<{ width: number; height: number } | null>>();
+const PUBLIC_DIR = resolve(process.cwd(), 'public');
 
-/** Intrinsic size of a file under public/, or null if it can't be read. */
+/**
+ * Intrinsic size of a file under public/, or null if it can't be read. The
+ * path comes from post HTML, so refuse anything that resolves outside public/
+ * (e.g. `/assets/%2e%2e/%2e%2e/...`).
+ */
 function publicImageSize(path: string) {
   let cached = sizeCache.get(path);
   if (!cached) {
-    cached = readFile(join(process.cwd(), 'public', decodeURIComponent(path)))
+    let file: string;
+    try {
+      file = resolve(PUBLIC_DIR, `.${decodeURIComponent(path)}`);
+    } catch {
+      return Promise.resolve(null); // malformed percent-encoding
+    }
+    if (!file.startsWith(PUBLIC_DIR + sep)) return Promise.resolve(null);
+    cached = readFile(file)
       .then((buf) => sharp(buf).metadata())
       .then((m) => (m.width && m.height ? { width: m.width, height: m.height } : null))
       .catch(() => null);
