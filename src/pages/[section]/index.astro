@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { POST_SECTIONS, type PostSection } from '../../lib/notion';
+
+const copy: Record<PostSection, { title: string; description: string; empty: string }> = {
+  projects: {
+    title: 'Projects',
+    description: 'Things I have built, and what I learned building them.',
+    empty: 'No projects yet. Either busy thinking or watching football.',
+  },
+  learnings: {
+    title: 'Learnings',
+    description: 'Notes on engineering and whatever else I am figuring out.',
+    empty: 'Nothing here yet. Suspiciously quiet.',
+  },
+  travel: {
+    title: 'Travel',
+    description: 'Trips, photos, and things worth remembering from them.',
+    empty: "Haven't gone anywhere recently. Or have I.",
+  },
+};
+
+export const getStaticPaths = (() =>
+  POST_SECTIONS.map((section) => ({ params: { section }, props: { section } }))) satisfies GetStaticPaths;
+
+const { section } = Astro.props;
+const { title, description, empty } = copy[section];
+const posts = (await getCollection('posts')).filter((p) => p.data.properties.Section === section);
+---
+
+<BaseLayout title={title} description={description} section={section}>
+  <div class="page-heading-row">
+    <h1 class="page-heading">{title}</h1>
+    <span class="page-heading-meta">{posts.length} {posts.length === 1 ? 'entry' : 'entries'}</span>
+  </div>
+  {posts.length > 0 ? <PostList entries={posts} /> : <p class="muted">{empty}</p>}
+</BaseLayout>

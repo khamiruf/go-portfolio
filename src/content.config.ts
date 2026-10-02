@@ -4,6 +4,19 @@ import { transformedPropertySchema as t } from 'notion-astro-loader/schemas';
 
 const NOTION_TOKEN = import.meta.env.NOTION_TOKEN;
 
+// Fail fast with a readable message instead of an opaque Notion API error.
+const requiredEnv = {
+  NOTION_TOKEN,
+  NOTION_BOOKS_DB: import.meta.env.NOTION_BOOKS_DB,
+  NOTION_POSTS_DB: import.meta.env.NOTION_POSTS_DB,
+};
+const missing = Object.entries(requiredEnv)
+  .filter(([, v]) => !v)
+  .map(([k]) => k);
+if (missing.length > 0) {
+  throw new Error(`Missing ${missing.join(', ')}. Copy .env.example to .env (see SETUP.md).`);
+}
+
 /**
  * Books collection — one Notion page per book. Page body = the reading note.
  * Cover art comes from the Notion page cover, or is derived from the ISBN at

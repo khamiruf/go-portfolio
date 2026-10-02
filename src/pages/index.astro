@@ -2,8 +2,18 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookCard from '../components/BookCard.astro';
+import PostList from '../components/PostList.astro';
+import { POST_SECTIONS, dateStart } from '../lib/notion';
 
 const books = await getCollection('books');
+const latest = (await getCollection('posts'))
+  .filter((p) => (POST_SECTIONS as readonly string[]).includes(p.data.properties.Section ?? ''))
+  .sort(
+    (a, b) =>
+      (dateStart(b.data.properties.Date)?.getTime() ?? -Infinity) -
+      (dateStart(a.data.properties.Date)?.getTime() ?? -Infinity),
+  )
+  .slice(0, 5);
 const reading = books.filter((b) => b.data.properties.Status === 'reading');
 
 const index = [
@@ -14,7 +24,10 @@ const index = [
 ];
 ---
 
-<BaseLayout section="home">
+<BaseLayout
+  section="home"
+  description="Backend engineer. Reads too much. Occasionally boards a plane. Notes on books, projects, learnings and travel."
+>
   <section class="hero">
     <div class="hero-grid">
       <div class="hero-main">
@@ -45,6 +58,13 @@ const index = [
       <div class="book-grid">
         {reading.map((entry) => <BookCard entry={entry} variant="progress" />)}
       </div>
+    </section>
+  )}
+
+  {latest.length > 0 && (
+    <section class="latest">
+      <p class="section-label">Latest</p>
+      <PostList entries={latest} showSection />
     </section>
   )}
 </BaseLayout>

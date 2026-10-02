@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SECTIONS } from '../lib/notion';
+---
+
+<BaseLayout title="Not found" description="This page doesn't exist.">
+  <div class="page-heading-row">
+    <h1 class="page-heading">404</h1>
+    <span class="page-heading-meta">not found</span>
+  </div>
+  <p class="muted">Nothing lives at this address. Maybe it moved, maybe it never was.</p>
+  <ul class="post-list post-list--no-date">
+    {SECTIONS.map((s) => <li><div class="post-meta"><a href={`/${s}/`}>{s}</a></div></li>)}
+  </ul>
+</BaseLayout>

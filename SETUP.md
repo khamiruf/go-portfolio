@@ -54,6 +54,24 @@ npm run dev      # local dev server
 npm run build    # static output in dist/
 ```
 
+## Checks
+
+```
+npm run check    # astro check (types + templates); needs the .env above
+```
+
+## Images in `public/assets/media`
+
+Files in `public/` are served as-is (no Astro optimization), so after adding
+photos run:
+
+```
+npm run optimize:images
+```
+
+It resizes to 1800px on the long edge, re-encodes with mozjpeg and strips EXIF
+(including GPS), keeping filenames so existing Notion references still work.
+
 ## Day-to-day
 
 Add or edit content in Notion. New `Posts` need `Section` set and `Published`

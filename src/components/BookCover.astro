@@ -1,0 +1,25 @@
+---
+/**
+ * Book cover with a title placeholder. If the image fails to load (e.g. no
+ * OpenLibrary cover for the ISBN), the site script swaps in the placeholder.
+ */
+export interface Props {
+  src: string | null;
+  title: string;
+  imgClass?: string;
+  placeholderClass: string;
+  eager?: boolean;
+}
+
+const { src, title, imgClass, placeholderClass, eager = false } = Astro.props;
+---
+
+{src ? (
+  <>
+    <img class={imgClass} src={src} alt="" width="180" height="270" data-cover
+         loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <div class={placeholderClass} hidden><span>{title}</span></div>
+  </>
+) : (
+  <div class={placeholderClass}><span>{title}</span></div>
+)}

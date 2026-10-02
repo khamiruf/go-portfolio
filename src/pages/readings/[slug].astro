@@ -2,53 +2,52 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { bookCover, ratingDots, slugify, dateStart, isoDate, readingStats, localizeAssets } from '../../lib/notion';
+import BookCover from '../../components/BookCover.astro';
+import { bookCover, ratingDots, slugFor, dateStart, isoDate, readingStats, prepareHtml, excerpt } from '../../lib/notion';
 
 export const getStaticPaths = (async () => {
   const books = await getCollection('books');
   // Only read/reading books get a detail page (matches the old Go build).
-  return books
-    .filter((b) => ['read', 'reading'].includes(b.data.properties.Status ?? ''))
-    .map((entry) => ({ params: { slug: slugify(entry.data.properties.Name) }, props: { entry } }));
+  return Promise.all(
+    books
+      .filter((b) => ['read', 'reading'].includes(b.data.properties.Status ?? ''))
+      .map(async (entry) => ({ params: { slug: await slugFor(entry) }, props: { entry } })),
+  );
 }) satisfies GetStaticPaths;
 
 const { entry } = Astro.props;
 const p = entry.data.properties;
 const cover = await bookCover(entry);
-const noteHtml = localizeAssets(entry.rendered?.html?.trim() ?? '');
+const noteHtml = await prepareHtml(entry.rendered?.html?.trim() ?? '');
 const hasNote = noteHtml.length > 0;
 const { words, minutes } = readingStats(noteHtml);
 const dateRead = isoDate(dateStart(p['Date Read']));
+const description = hasNote
+  ? excerpt(noteHtml)
+  : `${p.Name}${p.Author ? ` by ${p.Author}` : ''} — reading notes.`;
 ---
 
-<BaseLayout title={p.Name} section="readings">
+<BaseLayout title={p.Name} description={description} section="readings" type="article">
   <article class="book-page">
-    <a href="/readings/" class="book-back reveal">← Readings</a>
+    <a href="/readings/" class="book-back" data-reveal>← Readings</a>
 
-    <div class="book-page-header reveal">
+    <div class="book-page-header" data-reveal>
       <div class="book-page-cover-col">
-        {cover ? (
-          <>
-            <img class="book-page-cover-img" src={cover} alt=""
-                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
-            <div class="book-page-cover-placeholder" style="display:none"><span>{p.Name}</span></div>
-          </>
-        ) : (
-          <div class="book-page-cover-placeholder"><span>{p.Name}</span></div>
-        )}
+        <BookCover src={cover} title={p.Name} eager
+                   imgClass="book-page-cover-img" placeholderClass="book-page-cover-placeholder" />
       </div>
       <div class="book-page-meta">
-        {p.Rating ? <p class="book-page-rating">{ratingDots(p.Rating)}</p> : null}
+        {p.Rating ? <p class="book-page-rating" aria-label={`Rated ${p.Rating} out of 5`}>{ratingDots(p.Rating)}</p> : null}
         <h1 class="book-page-title">{p.Name}</h1>
         <p class="book-page-author">{p.Author}</p>
         {p.Translator && <p class="book-page-translator">trans. {p.Translator}</p>}
         <div class="book-page-stats">
-          {dateRead && <span>{dateRead}</span>}
+          {dateRead && <time datetime={dateRead}>{dateRead}</time>}
           {p.Progress ? <span>{p.Progress}% through</span> : null}
         </div>
         {p.Tags && p.Tags.length > 0 && (
           <div class="book-page-tags">
-            {p.Tags.map((tag) => <a href={`/readings/?tag=${tag}`} class="tag">{tag}</a>)}
+            {p.Tags.map((tag) => <a href={`/readings/?tag=${encodeURIComponent(tag)}`} class="tag">{tag}</a>)}
           </div>
         )}
       </div>
@@ -56,15 +55,15 @@ const dateRead = isoDate(dateStart(p['Date Read']));
 
     {hasNote ? (
       <div class="book-page-review">
-        <div class="review-header reveal">
+        <div class="review-header" data-reveal>
           <p class="section-label">My notes</p>
           {words > 0 && <span class="review-stats">{words} words · ~{minutes} min read</span>}
         </div>
-        <div class="book-page-review-text prose reveal" set:html={noteHtml} />
+        <div class="book-page-review-text prose" id="post-body" set:html={noteHtml} />
       </div>
     ) : p.Status === 'read' ? (
       <div class="book-page-review">
-        <p class="muted reveal">Nothing written down. Sometimes a book just sits with you.</p>
+        <p class="muted" data-reveal>Nothing written down. Sometimes a book just sits with you.</p>
       </div>
     ) : null}
   </article>
