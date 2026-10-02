@@ -127,6 +127,9 @@ body {
   color: var(--fg);
   line-height: 1.65;
   padding: 0 clamp(20px, 4vw, 80px);
+  padding-left: max(clamp(20px, 4vw, 80px), env(safe-area-inset-left));
+  padding-right: max(clamp(20px, 4vw, 80px), env(safe-area-inset-right));
+  -webkit-tap-highlight-color: transparent;
   transition:
     background var(--dur-slow) var(--ease-out-quart),
     color var(--dur-slow) var(--ease-out-quart);
@@ -515,14 +518,22 @@ main {
   transition: opacity var(--dur-fast) var(--ease-out-quart);
 }
 
-.book-card:hover .book-cover,
 .book-card:focus-visible .book-cover {
   opacity: 0.7;
 }
 
-.book-card:hover .book-title,
 .book-card:focus-visible .book-title {
   color: var(--fg-muted);
+}
+
+@media (hover: hover) {
+  .book-card:hover .book-cover {
+    opacity: 0.7;
+  }
+
+  .book-card:hover .book-title {
+    color: var(--fg-muted);
+  }
 }
 
 .book-cover {
@@ -803,6 +814,33 @@ article:not(.book-page) {
 
 .prose {
   max-width: var(--max-w-prose);
+  overflow-wrap: break-word;
+}
+
+/* Wide tables scroll inside the column instead of overflowing the page. */
+.prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: var(--space-xl) 0;
+  font-size: var(--text-sm);
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-xs) var(--space-md) var(--space-xs) 0;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.prose th {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-muted);
 }
 
 .prose p {
@@ -1173,8 +1211,13 @@ article:not(.book-page) {
     flex-direction: column;
     align-items: flex-start;
     gap: 0;
-    padding-top: var(--space-sm);
+  }
+
+  /* Divider sits inside the clipped area so nothing shows while closed. */
+  #primary-nav .nav-inner a:first-child {
+    margin-top: var(--space-sm);
     border-top: 1px solid var(--border);
+    padding-top: var(--space-md);
   }
 
   #primary-nav .nav-inner a {
@@ -1184,7 +1227,7 @@ article:not(.book-page) {
   }
 
   main {
-    padding: var(--space-3xl) 0;
+    padding: var(--space-2xl) 0 var(--space-3xl);
   }
 
   .hero {
@@ -1207,8 +1250,62 @@ article:not(.book-page) {
   }
 
   .back-to-top {
-    bottom: var(--space-lg);
-    right: var(--space-lg);
+    bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+    right: max(var(--space-lg), env(safe-area-inset-right));
+    width: 44px;
+    height: 44px;
+  }
+
+  /* 44px touch targets for the header controls. */
+  .header-controls {
+    gap: var(--space-sm);
+  }
+
+  .theme-toggle,
+  .hamburger {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hamburger {
+    align-items: center;
+  }
+
+  .hamburger::before {
+    content: none;
+  }
+
+  .theme-toggle {
+    border-color: transparent;
+  }
+
+  /* Small links get a taller hit area without changing the layout. */
+  .footer-nav {
+    gap: 0 var(--space-lg);
+  }
+
+  .footer-nav a,
+  .book-back {
+    padding: var(--space-sm) 0;
+  }
+
+  .book-back {
+    margin-bottom: var(--space-2xl);
+  }
+
+  /* Title, author and translator stack instead of squeezing into columns. */
+  .want-list li {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .article-header {
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+  }
+
+  .prose pre {
+    padding: var(--space-md);
   }
 }
 
@@ -1312,6 +1409,14 @@ article:not(.book-page) {
 .tag-select option {
   background: var(--bg-raised);
   color: var(--fg);
+}
+
+/* iOS Safari zooms the page when focusing a control under 16px. */
+@media (max-width: 600px) {
+  .tag-select {
+    font-size: 16px;
+    padding-block: var(--space-sm);
+  }
 }
 
 /* ── Book detail tags ── */

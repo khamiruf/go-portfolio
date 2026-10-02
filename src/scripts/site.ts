@@ -16,6 +16,9 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   toggle?.addEventListener('click', () => {
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
     root.dataset.theme = next;
+    document
+      .querySelector<HTMLMetaElement>('meta[name="theme-color"]')
+      ?.setAttribute('content', next === 'dark' ? '#15140F' : '#F7F6F1');
     try {
       localStorage.setItem('theme', next);
     } catch {
