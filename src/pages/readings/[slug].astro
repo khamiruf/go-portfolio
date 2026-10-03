@@ -28,25 +28,25 @@ const description = hasNote
 ---
 
 <BaseLayout title={p.Name} description={description} section="readings" type="article">
-  <article class="book-page">
-    <a href="/readings/" class="book-back" data-reveal>← Readings</a>
+  <article class="book-page" data-pagefind-body data-pagefind-meta="section:readings">
+    <a href="/readings/" class="book-back" data-reveal data-pagefind-ignore>← Readings</a>
 
     <div class="book-page-header" data-reveal>
-      <div class="book-page-cover-col">
+      <div class="book-page-cover-col" data-pagefind-ignore>
         <BookCover src={cover} title={p.Name} eager
                    imgClass="book-page-cover-img" placeholderClass="book-page-cover-placeholder" />
       </div>
       <div class="book-page-meta">
-        {p.Rating ? <p class="book-page-rating" aria-label={`Rated ${p.Rating} out of 5`}>{ratingDots(p.Rating)}</p> : null}
-        <h1 class="book-page-title">{p.Name}</h1>
-        <p class="book-page-author">{p.Author}</p>
-        {p.Translator && <p class="book-page-translator">trans. {p.Translator}</p>}
-        <div class="book-page-stats">
-          {dateRead && <time datetime={dateRead}>{dateRead}</time>}
+        {p.Rating ? <p class="book-page-rating" data-pagefind-ignore aria-label={`Rated ${p.Rating} out of 5`}>{ratingDots(p.Rating)}</p> : null}
+        <h1 class="book-page-title" data-pagefind-ignore>{p.Name}</h1>
+        <p class="book-page-author" data-pagefind-meta="author" data-pagefind-ignore>{p.Author}</p>
+        {p.Translator && <p class="book-page-translator" data-pagefind-ignore>trans. <span data-pagefind-meta="translator">{p.Translator}</span></p>}
+        <div class="book-page-stats" data-pagefind-ignore>
+          {dateRead && <time datetime={dateRead} data-pagefind-meta="date">{dateRead}</time>}
           {p.Progress ? <span>{p.Progress}% through</span> : null}
         </div>
         {p.Tags && p.Tags.length > 0 && (
-          <div class="book-page-tags">
+          <div class="book-page-tags" data-pagefind-ignore data-pagefind-meta={`tags:${p.Tags.join(' ')}`}>
             {p.Tags.map((tag) => <a href={`/readings/?tag=${encodeURIComponent(tag)}`} class="tag">{tag}</a>)}
           </div>
         )}
@@ -55,7 +55,7 @@ const description = hasNote
 
     {hasNote ? (
       <div class="book-page-review">
-        <div class="review-header" data-reveal>
+        <div class="review-header" data-reveal data-pagefind-ignore>
           <p class="section-label">My notes</p>
           {words > 0 && <span class="review-stats">{words} words · ~{minutes} min read</span>}
         </div>
@@ -63,7 +63,7 @@ const description = hasNote
       </div>
     ) : p.Status === 'read' ? (
       <div class="book-page-review">
-        <p class="muted" data-reveal>Nothing written down. Sometimes a book just sits with you.</p>
+        <p class="muted" data-reveal data-pagefind-ignore>Nothing written down. Sometimes a book just sits with you.</p>
       </div>
     ) : null}
   </article>

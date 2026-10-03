@@ -275,7 +275,8 @@ main,
   transform: translateY(-6.5px) rotate(-45deg);
 }
 
-/* ── Theme toggle ── */
+/* ── Header icon buttons (search, theme toggle) ── */
+.search-link,
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -296,9 +297,14 @@ main,
   flex-shrink: 0;
 }
 
+.search-link:hover,
 .theme-toggle:hover {
   color: var(--fg);
   border-color: var(--fg);
+}
+
+.search-link[aria-current="page"] {
+  color: var(--fg);
 }
 
 /* ── Main ── */
@@ -1259,6 +1265,7 @@ article:not(.book-page) {
     gap: var(--space-sm);
   }
 
+  .search-link,
   .theme-toggle,
   .hamburger {
     width: 44px;
@@ -1273,6 +1280,7 @@ article:not(.book-page) {
     content: none;
   }
 
+  .search-link,
   .theme-toggle {
     border-color: transparent;
   }
@@ -1413,6 +1421,68 @@ article:not(.book-page) {
     font-size: 16px;
     padding-block: var(--space-sm);
   }
+}
+
+/* ── Search ── */
+.search-form {
+  margin-bottom: var(--space-lg);
+}
+
+.search-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-sm);
+}
+
+.search-input {
+  width: 100%;
+  max-width: var(--max-w-prose);
+  font: inherit;
+  font-size: var(--text-lg);
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space-md);
+  transition: border-color var(--dur-fast) var(--ease-out-quart);
+}
+
+.search-input:hover,
+.search-input:focus {
+  border-color: var(--fg);
+}
+
+/* The native clear button is browser-blue and clashes with the site. */
+.search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.search-status {
+  min-height: 1.5em;
+  margin-bottom: var(--space-md);
+}
+
+.search-byline {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+.search-excerpt {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+  max-width: var(--max-w-prose);
+}
+
+.search-excerpt mark {
+  background: var(--section-accent);
+  /* Accents are pastel in both themes, so the highlight always takes dark text. */
+  color: #111111;
+  border-radius: var(--radius);
 }
 
 /* ── Book detail tags ── */
