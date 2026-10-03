@@ -113,5 +113,8 @@ Content edits in Notion don't touch git, so a **Deploy Hook** rebuilds the site.
 Requires Notion **automations** (paid plans). If unavailable, fall back to a cron
 (GitHub Action or CF cron trigger) that `POST`s the Deploy Hook every ~30–60 min.
 
-Rebuilds are cheap: Astro's Content Layer caches by `last_edited_time`, so only
-changed pages re-render.
+`npm run build` passes `--force`, so every build re-fetches every page from
+Notion. Without it, Astro reuses its content cache (kept in `node_modules/.astro`,
+which Cloudflare's build cache preserves) for pages whose `last_edited_time`
+hasn't changed, and those pages' Notion images never get downloaded, so their
+`/_astro/*` files are missing from the deploy.
