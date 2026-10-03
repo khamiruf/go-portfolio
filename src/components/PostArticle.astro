@@ -12,11 +12,11 @@ const date = isoDate(dateStart(p.Date));
 const { words, minutes } = readingStats(html);
 ---
 
-<article>
+<article data-pagefind-body data-pagefind-meta={`section:${p.Section ?? ''}`}>
   <div class="article-header">
-    <h1>{p.Name}</h1>
-    <p class="meta">
-      {date && <time datetime={date}>{date}</time>}
+    <h1 data-pagefind-ignore>{p.Name}</h1>
+    <p class="meta" data-pagefind-ignore data-pagefind-meta={p.Tags?.length ? `tags:${p.Tags.join(' ')}` : undefined}>
+      {date && <time datetime={date} data-pagefind-meta="date">{date}</time>}
       {words > 0 && <><span>{words} words</span><span>{minutes} min read</span></>}
       {p.Tags && p.Tags.map((tag) => <span class="tag">{tag}</span>)}
     </p>

@@ -51,8 +51,14 @@ by absolute URL (`SITE_URL`, default `https://khamiruf.pages.dev`); override wit
 
 ```
 npm run dev      # local dev server
-npm run build    # static output in dist/
+npm run build    # static output in dist/, plus the search index in dist/pagefind/
 ```
+
+Search (`/search/`) is powered by [Pagefind](https://pagefind.app), which indexes
+the built HTML after `astro build`. The index only exists in the build output, so
+search shows "unavailable" under `npm run dev`; use `npm run build && npm run
+preview` to try it. Only elements marked `data-pagefind-body` (post and book
+pages) are indexed.
 
 ## Checks
 
