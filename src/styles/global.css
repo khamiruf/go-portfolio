@@ -1441,14 +1441,21 @@ article:not(.book-page) {
 .search-input {
   width: 100%;
   max-width: var(--max-w-prose);
-  font: inherit;
-  font-size: var(--text-lg);
+  font-family: var(--font-mono);
+  /* 16px: iOS Safari zooms the page when focusing a smaller control. */
+  font-size: 16px;
+  letter-spacing: 0.02em;
   color: var(--fg);
   background: transparent;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--space-sm) var(--space-md);
   transition: border-color var(--dur-fast) var(--ease-out-quart);
+}
+
+.search-input::placeholder {
+  color: var(--fg-muted);
+  opacity: 1;
 }
 
 .search-input:hover,
