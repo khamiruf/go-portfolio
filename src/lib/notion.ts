@@ -80,6 +80,21 @@ export function dateStart(d: NotionDate): Date | null {
   return d.start instanceof Date ? d.start : new Date(d.start);
 }
 
+// The Notion loader's content-layer cache can leave previously-synced entries
+// in stale positions (it only repositions pages whose last_edited_time
+// changed), so post lists must sort explicitly rather than trust collection
+// order. Undated posts sink to the bottom; same-day posts fall back to title
+// (numeric-aware, descending) so "Part 2" sits above "Part 1".
+const titleCollator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+
+/** Sort comparator: newest post first. */
+export function byDateDesc(a: PostEntry, b: PostEntry): number {
+  const aTime = dateStart(a.data.properties.Date)?.getTime() ?? -Infinity;
+  const bTime = dateStart(b.data.properties.Date)?.getTime() ?? -Infinity;
+  if (aTime !== bTime) return bTime > aTime ? 1 : -1;
+  return titleCollator.compare(b.data.properties.Name ?? '', a.data.properties.Name ?? '');
+}
+
 // en-CA formats as YYYY-MM-DD. Dates are shown in Singapore time: a Notion
 // date-only value parses as UTC midnight (still the same day at UTC+8), and a
 // date with a time no longer slips back a day when it falls before 08:00 SGT.

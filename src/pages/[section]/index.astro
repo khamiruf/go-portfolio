@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostList from '../../components/PostList.astro';
-import { POST_SECTIONS, type PostSection } from '../../lib/notion';
+import { POST_SECTIONS, byDateDesc, type PostSection } from '../../lib/notion';
 
 const copy: Record<PostSection, { title: string; description: string; empty: string }> = {
   projects: {
@@ -28,7 +28,8 @@ export const getStaticPaths = (() =>
 
 const { section } = Astro.props;
 const { title, description, empty } = copy[section];
-const posts = (await getCollection('posts')).filter((p) => p.data.properties.Section === section);
+const posts = (await getCollection('posts')).filter((p) => p.data.properties.Section === section)
+  .sort(byDateDesc);
 ---
 
 <BaseLayout title={title} description={description} section={section}>
