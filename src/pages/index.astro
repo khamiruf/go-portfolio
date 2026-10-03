@@ -3,16 +3,12 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookCard from '../components/BookCard.astro';
 import PostList from '../components/PostList.astro';
-import { POST_SECTIONS, dateStart } from '../lib/notion';
+import { POST_SECTIONS, byDateDesc } from '../lib/notion';
 
 const books = await getCollection('books');
 const latest = (await getCollection('posts'))
   .filter((p) => (POST_SECTIONS as readonly string[]).includes(p.data.properties.Section ?? ''))
-  .sort(
-    (a, b) =>
-      (dateStart(b.data.properties.Date)?.getTime() ?? -Infinity) -
-      (dateStart(a.data.properties.Date)?.getTime() ?? -Infinity),
-  )
+  .sort(byDateDesc)
   .slice(0, 5);
 const reading = books.filter((b) => b.data.properties.Status === 'reading');
 
