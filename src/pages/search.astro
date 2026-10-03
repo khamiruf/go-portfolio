@@ -25,6 +25,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     };
     type PagefindSearch = { results: { data: () => Promise<PagefindResult> }[] };
     type Pagefind = {
+      init: () => Promise<void>;
       // Resolves to null when a newer call supersedes this one.
       debouncedSearch: (term: string, options?: object, timeoutMs?: number) => Promise<PagefindSearch | null>;
     };
@@ -40,7 +41,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     // to bundle it.
     const bundle = '/pagefind/pagefind.js';
     let pagefind: Promise<Pagefind> | undefined;
-    const loadPagefind = () => (pagefind ??= import(/* @vite-ignore */ bundle));
+    const loadPagefind = (): Promise<Pagefind> => (pagefind ??= import(/* @vite-ignore */ bundle));
+
+    /**
+     * Pagefind escapes `<` and `>` in excerpts but not `&`, so treat the excerpt
+     * as untrusted: parse it inertly and keep only text and its <mark> highlights.
+     */
+    function excerptNodes(html: string): Node[] {
+      const parsed = document.createElement('template');
+      parsed.innerHTML = html;
+      return [...parsed.content.childNodes].map((node) => {
+        if (node instanceof HTMLElement && node.tagName === 'MARK') {
+          const mark = document.createElement('mark');
+          mark.textContent = node.textContent;
+          return mark;
+        }
+        return document.createTextNode(node.textContent ?? '');
+      });
+    }
 
     function renderResult(r: PagefindResult): HTMLLIElement {
       const li = document.createElement('li');
@@ -60,11 +78,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         meta.append(p);
       }
 
-      // Pagefind escapes page text when indexing; the only markup in an
-      // excerpt is its own <mark> highlighting.
       const excerpt = document.createElement('p');
       excerpt.className = 'search-excerpt';
-      excerpt.innerHTML = r.excerpt;
+      excerpt.append(...excerptNodes(r.excerpt));
       meta.append(excerpt);
 
       if (r.meta.section) {
@@ -94,19 +110,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         return;
       }
 
-      let search: PagefindSearch | null;
+      let total: number;
+      let results: PagefindResult[];
       try {
-        search = await (await loadPagefind()).debouncedSearch(term, {}, 200);
+        const search = await (await loadPagefind()).debouncedSearch(term, {}, 200);
+        // null: a newer keystroke superseded this search.
+        if (search === null) return;
+        total = search.results.length;
+        results = await Promise.all(search.results.slice(0, MAX_RESULTS).map((r) => r.data()));
       } catch {
         pagefind = undefined; // allow a retry on the next keystroke
+        if (input.value.trim() !== term) return;
+        list.replaceChildren();
         status.textContent = 'Search is unavailable right now.';
         return;
       }
-      // null: a newer keystroke superseded this search.
-      if (search === null) return;
-
-      const total = search.results.length;
-      const results = await Promise.all(search.results.slice(0, MAX_RESULTS).map((r) => r.data()));
       // A newer search may have finished while fragments were loading.
       if (input.value.trim() !== term) return;
 
@@ -131,6 +149,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       input.focus();
     }
     // Start fetching the index while the user types their first word.
-    loadPagefind().catch(() => {});
+    loadPagefind()
+      .then((pf) => pf.init())
+      .catch(() => {});
   </script>
 </BaseLayout>
